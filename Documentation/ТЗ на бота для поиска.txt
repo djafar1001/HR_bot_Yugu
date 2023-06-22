@@ -1,0 +1,24 @@
+Terms of Reference for creating a bot for Telegram that searches for messages:
+1. general information:
+We need to develop a bot for Telegram that can search for messages based on keywords entered by the user. This bot will additionally retrieve the number of messages containing the keyword and allow the user to choose how many of these messages they want to display. It should then provide a display of these messages in the current chat room, as well as a built-in menu displaying the various actions the user can perform on the message.
+2. scope:
+The scope of the project includes the following functions:
+- The bot should be able to search for messages based on keywords entered by the user.
+- The bot should retrieve the number of messages containing the keyword.
+- The bot should allow the user to specify how many messages they want to display.
+- The bot must display the selected messages in the current chat.
+- The bot must display a built-in menu with different actions the user can perform on the message.
+- The bot must be able to send a complaint about a selected message to the chat room in the built-in menu
+3. Deliverables:
+Project deliverables include:
+- Telegram bot source code.
+- Bot documentation.
+- Instructions for bot deployment.
+- User manual for the bot.
+4. requirements:
+The bot must meet the following requirements:
+- It must be developed using the Python programming language.
+- It must use the pyTelegramBotAPI library to interact with Telegram.
+- It must be able to search for messages in real time and respond quickly to user requests.
+- It should be able to handle multiple simultaneous user requests.
+- It must be able to send a complaint to a selected message
