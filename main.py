@@ -84,9 +84,15 @@ def start_dialog(message):
                      f'{employee.name} Вы готовы приступить к работе по адаптации?',
                      reply_markup=markup)
 
-# @bot.callback_query_handlers(func=lambda call: True):
-# def reaktion(call):
-#     pass
+    @bot.callback_query_handler(func=lambda call: True)
+    def reaktion(call):
+        if call.data == '1':
+            bot.edit_message_text(chat_id=call.message.chat.id,
+                                  message_id=call.message.id,
+                                  text=f'{employee.name} сегодня в рамках программы адаптации\n'
+                                       f'Вам необходимо пройти вводный курс\n'
+                                       f'"Добро пожаловать в Банк России" ')
+        pass
 
 
 if __name__ == '__main__':
