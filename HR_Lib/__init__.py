@@ -2,7 +2,7 @@ from datetime import datetime
 from telebot import types
 
 
-def format_time(timestamp: int) -> str:
+def format_time(timestamp: int | float) -> str:
     """
     Функция перевода времени из Unix формата
     :param timestamp: int: дата в формате Unix
