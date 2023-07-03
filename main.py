@@ -46,7 +46,7 @@ else:
     employees = {}
 
 
-@bot.message_handler(commands=['start'])
+@bot.message_handler(commands=['start', 'help'])
 def handle_start(message, employee=None):
     """
     После ввода команды /start Проверяем наличие пользователя в словаре сотрудников
@@ -56,24 +56,28 @@ def handle_start(message, employee=None):
     :param message:
     :return:
     """
-    if message.chat.id not in employees.keys():
-        bot.send_message(message.chat.id, mess[0][1])
-        with open('./pic/AnimatedSticker_hi.tgs', 'rb') as file:
-            bot.send_sticker(message.chat.id, file)
-        # Запрос имени сотрудника
-        answer = bot.send_message(message.chat.id, mess[0][2])
-        bot.register_next_step_handler(answer, start_dialog)
-    else:
-        employee = employees[message.chat.id]
-        #       print(employee.__str__())
-        bot.send_message(message.chat.id, employee.__str__())
-        #       bot.send_message(message.chat.id, str(employee.courses_completed))
-
-        if not all(employees[message.chat.id].courses_completed):
-            bot.send_message(message.chat.id, 'Давайте продолжим')
+    if message.text == '/start':
+        if message.chat.id not in employees.keys():
+            bot.send_message(message.chat.id, mess[0][1])
+            with open('./pic/AnimatedSticker_hi.tgs', 'rb') as file:
+                bot.send_sticker(message.chat.id, file)
+            # Запрос имени сотрудника
+            answer = bot.send_message(message.chat.id, mess[0][2])
+            bot.register_next_step_handler(answer, start_dialog)
         else:
-            bot.send_message(message.chat.id, 'Вы успешно прошли все этапы адаптации'
-                                              '\nУдачи в работе')
+            employee = employees[message.chat.id]
+            #       print(employee.__str__())
+            bot.send_message(message.chat.id, employee.__str__())
+            #       bot.send_message(message.chat.id, str(employee.courses_completed))
+
+            if not all(employees[message.chat.id].courses_completed):
+                bot.send_message(message.chat.id, 'Давайте продолжим')
+            else:
+                bot.send_message(message.chat.id, mess[0][8])
+    elif message.text == '/help':
+        help_m = bot.send_message(message.chat.id, HELP_MESS)
+        sleep(12)
+        bot.delete_message(message.chat.id, help_m.id)
 
 
 def start_dialog(message):
@@ -92,16 +96,8 @@ def start_dialog(message):
         pickle.dump(employees, file)
 
     bot.send_message(message.chat.id, f'Рад знакомству <b>{employee.name}</b>!\n{mess[0][3]}!', parse_mode='html')
-    #    bot.send_message(message.chat.id, f'{employee.name} с началом трудовой деятельности в Банке Росси')
+    bot.send_message(message.chat.id, mess[0][7])
 
-    # markup = types.InlineKeyboardMarkup(row_width=2)
-    # butt_yes = types.InlineKeyboardButton('Да', callback_data='1')
-    # butt_no = types.InlineKeyboardButton('Нет', callback_data='0')
-    # markup.add(butt_yes, butt_no)
-
-    # bot.send_message(message.chat.id,
-    #                  f'{employee.name} Вы готовы приступить к работе по адаптации?',
-    #                  reply_markup=lib.simple_menu())
     bot.send_message(message.chat.id,
                      mess[0][4],
                      reply_markup=lib.simple_menu())
@@ -118,8 +114,14 @@ def start_dialog(message):
             bot.send_message(call.message.chat.id, mess[0][5],
                              reply_markup=lib.menu_ready(),
                              parse_mode='html')
-        else:
-            ...
+        elif call.data == '0':
+            time_out = bot.send_message(call.message.chat.id, mess[0][9])
+            bot.delete_message(call.message.chat.id, call.message.id)
+            sleep(10)
+            bot.delete_message(call.message.chat.id, time_out.id)
+            bot.send_message(call.message.chat.id,
+                             mess[0][4],
+                             reply_markup=lib.simple_menu())
 
 
 @bot.message_handler(content_types=['text'])
@@ -130,14 +132,25 @@ def text_reaction(message):
             remove(path_file)
         except:
             bot.send_message(message.chat.id, f'Файл {path_file} не найден')
-    #       employees = {}
-    elif message.text == 'Прошел✔️':
+    elif message.text == 'Прошел✔️':  # Реакция на нажатие кнопки "Прошел"
 
         employees[message.chat.id].courses_completed[employees[message.chat.id].current_course - 1] = 1
         employees[message.chat.id].current_course += 1
 
-        bot.send_message(message.chat.id, mess[0][6],
-                         reply_markup=lib.simple_menu())
+        if not all(employees[message.chat.id].courses_completed):
+            with open('./pic/dog_.OK.tgs', 'rb') as file:
+                dog_stiker = bot.send_sticker(message.chat.id, file, reply_markup=types.ReplyKeyboardRemove())
+            sleep(3)
+            bot.delete_message(message.chat.id, dog_stiker.id)
+
+            bot.send_message(message.chat.id, mess[0][6],
+                             reply_markup=lib.simple_menu())
+        else:
+            with open('./pic/Hand_.well_done.tgs', 'rb') as file:
+                bot.send_sticker(message.chat.id, file, reply_markup=types.ReplyKeyboardRemove())
+
+            bot.send_message(message.chat.id, mess[0][8])
+
 
 
 if __name__ == '__main__':

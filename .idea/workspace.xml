@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d45757aa-8889-4849-89a4-087695c0dd9b" name="Changes" comment="Разработка рекций на callback запросы и реакция на reply-меню">
-      <change afterPath="$PROJECT_DIR$/pic/AnimatedSticker_.well_done.tgs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pic/AnimatedSticker_hi.tgs" afterDir="false" />
+    <list default="true" id="d45757aa-8889-4849-89a4-087695c0dd9b" name="Changes" comment="Доработка диалога бота и создание словарей сообщений бота">
+      <change afterPath="$PROJECT_DIR$/pic/Hand_.well_done.tgs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pic/dog_.OK.tgs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/poll_test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HR_Lib/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/HR_Lib/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pic/AnimatedSticker_.well_done.tgs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/setings_HR.py" beforeDir="false" afterPath="$PROJECT_DIR$/setings_HR.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -33,13 +35,13 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/python/HR_bot_Yugu"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/python/HR_bot_Yugu&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\python\HR_bot_Yugu\pic" />
@@ -88,6 +90,27 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="poll_test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="HR_bot_Yugu" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/poll_test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="test_bot" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="HR_bot_Yugu" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -112,6 +135,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.poll_test" />
         <item itemvalue="Python.test_bot" />
         <item itemvalue="Python.main_HR_bot" />
       </list>
@@ -154,7 +178,14 @@
       <option name="project" value="LOCAL" />
       <updated>1687968822629</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Доработка диалога бота и создание словарей сообщений бота">
+      <created>1688133057034</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1688133057034</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -173,6 +204,7 @@
     <MESSAGE value="Создание приветственного блока" />
     <MESSAGE value="Создание calback обращения" />
     <MESSAGE value="Разработка рекций на callback запросы и реакция на reply-меню" />
-    <option name="LAST_COMMIT_MESSAGE" value="Разработка рекций на callback запросы и реакция на reply-меню" />
+    <MESSAGE value="Доработка диалога бота и создание словарей сообщений бота" />
+    <option name="LAST_COMMIT_MESSAGE" value="Доработка диалога бота и создание словарей сообщений бота" />
   </component>
 </project>
