@@ -23,15 +23,21 @@ from time import time, sleep
 bot = telebot.TeleBot(TOKEN['token'])  # привязка бота к коду
 
 
-# Класс, представляющий нового сотрудника
 class Employee:
+    """Класс, представляющий нового сотрудника"""
+
     def __init__(self, name):
         self.name = name
-        #        self.training_start = datetime.now()
+        # self.training_start = lib.datetime.now()
         self.training_start = time()
         self.adaptation_dey = 1
         self.current_course = 1
         self.courses_completed = [0] * 5
+
+    def info_time(self):
+        time_begin = lib.format_time(self.training_start)
+        print(time_begin, type(time_begin))
+        print(self.training_start, type(self.training_start))
 
     def __str__(self):
         return f'Пользователь {self.name} начал адаптацию {lib.format_time(self.training_start)}\n' \
@@ -46,7 +52,7 @@ else:
     employees = {}
 
 
-@bot.message_handler(commands=['start', 'help'])
+@bot.message_handler(commands=['start', 'help', 'continue', 'edit'])
 def handle_start(message, employee=None):
     """
     После ввода команды /start Проверяем наличие пользователя в словаре сотрудников
@@ -67,17 +73,24 @@ def handle_start(message, employee=None):
         else:
             employee = employees[message.chat.id]
             #       print(employee.__str__())
-            bot.send_message(message.chat.id, employee.__str__())
+            #          bot.send_message(message.chat.id, employee.__str__())
             #       bot.send_message(message.chat.id, str(employee.courses_completed))
 
-            if not all(employees[message.chat.id].courses_completed):
-                bot.send_message(message.chat.id, 'Давайте продолжим')
+            if not all(employee.courses_completed):
+                bot.send_message(message.chat.id, 'Давайте продолжим', reply_markup=lib.simple_menu())
             else:
                 bot.send_message(message.chat.id, mess[0][8])
     elif message.text == '/help':
         help_m = bot.send_message(message.chat.id, HELP_MESS)
         sleep(12)
         bot.delete_message(message.chat.id, help_m.id)
+    elif message.text in ['/continue', '/edit']:
+        with open('./pic/Hand_work.tgs', 'rb') as file:
+            ms_1 = bot.send_sticker(message.chat.id, file)
+            ms_2 = bot.send_message(message.chat.id, 'Функционал в разработке')
+            sleep(5)
+            bot.delete_message(message.chat.id, ms_1.id)
+            bot.delete_message(message.chat.id, ms_2.id)
 
 
 def start_dialog(message):
@@ -150,7 +163,8 @@ def text_reaction(message):
                 bot.send_sticker(message.chat.id, file, reply_markup=types.ReplyKeyboardRemove())
 
             bot.send_message(message.chat.id, mess[0][8])
-
+    else:
+        bot.send_message(message.chat.id, mess[0][10])  # сообщение бота на любой ввод не учтенный в коде
 
 
 if __name__ == '__main__':
