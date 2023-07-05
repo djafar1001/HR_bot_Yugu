@@ -2,14 +2,14 @@
 HRБот– виртуальный ассистент предназначенный для коммуникации
 с принятыми в Банк России на работу сотрудниками,
 обученный общаться по ограниченному кругу сценариев
-Бот обрабатывает командыЖ
+Бот обрабатывает команды:
 start - запуск бота
 edit - редактирует имя
 continue - продолжение работы с ботом
 help - информация о нахождении курсов
 
 """
-from setings_HR import HR_BOT_TOKEN as TOKEN, BOT_MESSSAGE as mess, HELP_MESS
+from setings_HR import HR_BOT_TOKEN as TOKEN, BOT_MESSAGE as mess, HELP_MESS
 import HR_Lib as lib
 
 import telebot
@@ -40,7 +40,7 @@ class Employee:
         print(self.training_start, type(self.training_start))
 
     def __str__(self):
-        return f'Пользователь {self.name} начал адаптацию {lib.format_time(self.training_start)}\n' \
+        return f'Пользователь {self.name} начал адаптацию {lib.format_time(self.training_start)}' \
                f'сейчас изучает курс {self.current_course} всего изучено {str(self.courses_completed)}'
 
 
@@ -163,6 +163,10 @@ def text_reaction(message):
                 bot.send_sticker(message.chat.id, file, reply_markup=types.ReplyKeyboardRemove())
 
             bot.send_message(message.chat.id, mess[0][8])
+    elif message.text.lower() == 'adm_sys':  # создает файл с информацией о пользователе
+        lib.sys_info(employees)
+        bot.send_message(message.chat.id, 'Файл создан')
+        pass
     else:
         bot.send_message(message.chat.id, mess[0][10])  # сообщение бота на любой ввод не учтенный в коде
 

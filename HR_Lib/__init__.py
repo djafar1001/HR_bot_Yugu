@@ -37,3 +37,14 @@ def menu_ready():
     kb.add(btn_1)
 
     return kb
+
+def sys_info(employees):
+    """
+    Функция Записывает данные о пользователях бота в текстовый файл
+    :param employees: dict - словарь с пользователями бота
+    :return: file
+    """
+    with open('employ_data.txt', 'w', encoding='UTF-8') as file:
+        file.write('id пользователя | информация о пользователе\n')
+        for i_id, i_exploy in employees.items():
+            file.write(f'  {i_id}     | {i_exploy}\n' )

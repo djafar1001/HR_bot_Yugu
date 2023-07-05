@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d45757aa-8889-4849-89a4-087695c0dd9b" name="Changes" comment="Корректировка списка вопросов. Команда /help. Отказ от прохождения. Завершение адаптации">
-      <change afterPath="$PROJECT_DIR$/HR-Bot.bat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pic/Hand_work.tgs" afterDir="false" />
+    <list default="true" id="d45757aa-8889-4849-89a4-087695c0dd9b" name="Changes" comment="мелкие корректировки по коду. Добавление заглушек на неработающий контент">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HR_Lib/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/HR_Lib/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
@@ -26,6 +24,9 @@
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectId" id="2RVjpRDVAyNqHcyEmv0n0FqPwQr" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -191,7 +192,14 @@
       <option name="project" value="LOCAL" />
       <updated>1688402151764</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="мелкие корректировки по коду. Добавление заглушек на неработающий контент">
+      <created>1688485248672</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1688485248672</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -212,6 +220,7 @@
     <MESSAGE value="Разработка рекций на callback запросы и реакция на reply-меню" />
     <MESSAGE value="Доработка диалога бота и создание словарей сообщений бота" />
     <MESSAGE value="Корректировка списка вопросов. Команда /help. Отказ от прохождения. Завершение адаптации" />
-    <option name="LAST_COMMIT_MESSAGE" value="Корректировка списка вопросов. Команда /help. Отказ от прохождения. Завершение адаптации" />
+    <MESSAGE value="мелкие корректировки по коду. Добавление заглушек на неработающий контент" />
+    <option name="LAST_COMMIT_MESSAGE" value="мелкие корректировки по коду. Добавление заглушек на неработающий контент" />
   </component>
 </project>
