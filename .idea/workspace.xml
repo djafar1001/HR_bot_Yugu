@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d45757aa-8889-4849-89a4-087695c0dd9b" name="Changes" comment="мелкие корректировки по коду. Добавление заглушек на неработающий контент">
+    <list default="true" id="d45757aa-8889-4849-89a4-087695c0dd9b" name="Changes" comment="добавлена функция создания файла с информацией о пользователях">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HR_Lib/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/HR_Lib/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/setings_HR.py" beforeDir="false" afterPath="$PROJECT_DIR$/setings_HR.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -199,7 +197,14 @@
       <option name="project" value="LOCAL" />
       <updated>1688485248672</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="добавлена функция создания файла с информацией о пользователях">
+      <created>1688571127728</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1688571127728</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -221,6 +226,7 @@
     <MESSAGE value="Доработка диалога бота и создание словарей сообщений бота" />
     <MESSAGE value="Корректировка списка вопросов. Команда /help. Отказ от прохождения. Завершение адаптации" />
     <MESSAGE value="мелкие корректировки по коду. Добавление заглушек на неработающий контент" />
-    <option name="LAST_COMMIT_MESSAGE" value="мелкие корректировки по коду. Добавление заглушек на неработающий контент" />
+    <MESSAGE value="добавлена функция создания файла с информацией о пользователях" />
+    <option name="LAST_COMMIT_MESSAGE" value="добавлена функция создания файла с информацией о пользователях" />
   </component>
 </project>

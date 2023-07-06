@@ -52,6 +52,12 @@ else:
     employees = {}
 
 
+
+with open('employees.db', 'wb') as file:  # !!!нужно создать функцию
+    pickle.dump(employees, file)
+
+
+
 @bot.message_handler(commands=['start', 'help', 'continue', 'edit'])
 def handle_start(message, employee=None):
     """
@@ -105,8 +111,8 @@ def start_dialog(message):
     employee = Employee(message.text)
     employees[message.chat.id] = employee
 
-    with open('employees.db', 'wb') as file:  # !!!нужно создать функцию
-        pickle.dump(employees, file)
+    # with open('employees.db', 'wb') as file:  # !!!нужно создать функцию
+    #     pickle.dump(employees, file)
 
     bot.send_message(message.chat.id, f'Рад знакомству <b>{employee.name}</b>!\n{mess[0][3]}!', parse_mode='html')
     bot.send_message(message.chat.id, mess[0][7])
