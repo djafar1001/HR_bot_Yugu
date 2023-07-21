@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d45757aa-8889-4849-89a4-087695c0dd9b" name="Changes" comment="добавлена функция создания файла с информацией о пользователях">
+    <list default="true" id="d45757aa-8889-4849-89a4-087695c0dd9b" name="Changes" comment="Мелкие корректировки">
+      <change afterPath="$PROJECT_DIR$/Documentation/Название_идеи_(00000002).docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Documentation/Пример_работы_ч-б.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
@@ -32,20 +35,41 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/python/HR_bot_Yugu&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "C:/python/HR_bot_Yugu",
+    "settings.editor.selected.configurable": "preferences.fileTypes"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\python\HR_bot_Yugu\pic" />
     </key>
   </component>
   <component name="RunManager" selected="Python.main">
+    <configuration name="Test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="HR_bot_Yugu" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="HR_bot_Yugu" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -133,6 +157,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.Test" />
         <item itemvalue="Python.poll_test" />
         <item itemvalue="Python.test_bot" />
         <item itemvalue="Python.main_HR_bot" />
@@ -204,7 +229,14 @@
       <option name="project" value="LOCAL" />
       <updated>1688571127728</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Мелкие корректировки">
+      <created>1688659422905</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1688659422906</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -227,6 +259,7 @@
     <MESSAGE value="Корректировка списка вопросов. Команда /help. Отказ от прохождения. Завершение адаптации" />
     <MESSAGE value="мелкие корректировки по коду. Добавление заглушек на неработающий контент" />
     <MESSAGE value="добавлена функция создания файла с информацией о пользователях" />
-    <option name="LAST_COMMIT_MESSAGE" value="добавлена функция создания файла с информацией о пользователях" />
+    <MESSAGE value="Мелкие корректировки" />
+    <option name="LAST_COMMIT_MESSAGE" value="Мелкие корректировки" />
   </component>
 </project>
