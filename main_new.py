@@ -52,10 +52,10 @@ else:
     employees = {}
 
 
-
-with open('employees.db', 'wb') as file:  # !!!нужно создать функцию
-    pickle.dump(employees, file)
-
+def dump_file():
+    """Функция сохранения словаря пользователей в битный файл"""
+    with open('employees.db', 'wb') as file:  # !!!нужно создать функцию
+        pickle.dump(employees, file)
 
 
 @bot.message_handler(commands=['start', 'help', 'continue', 'edit'])
@@ -70,11 +70,11 @@ def handle_start(message, employee=None):
     """
     if message.text == '/start':
         if message.chat.id not in employees.keys():
-            bot.send_message(message.chat.id, mess[0][1])
+            bot.send_message(message.chat.id, mess[99][1])  # Приветствие
             with open('./pic/AnimatedSticker_hi.tgs', 'rb') as file:
                 bot.send_sticker(message.chat.id, file)
             # Запрос имени сотрудника
-            answer = bot.send_message(message.chat.id, mess[0][2])
+            answer = bot.send_message(message.chat.id, mess[99][2])
             bot.register_next_step_handler(answer, start_dialog)
         else:
             employee = employees[message.chat.id]
@@ -102,7 +102,7 @@ def handle_start(message, employee=None):
 def start_dialog(message):
     """
     Создание объекта сотрудника и сохранение его в словаре по
-    идентификатору чата с последующей сериализацией в битовый файл/
+    идентификатору чата с последующей сериализацией в битовый файл.
     Выполняем диалог первого дня
 
     :param message:
@@ -110,11 +110,9 @@ def start_dialog(message):
     """
     employee = Employee(message.text)
     employees[message.chat.id] = employee
+    dump_file()  # Сохранение словаря сотрудников в файл
 
-    # with open('employees.db', 'wb') as file:  # !!!нужно создать функцию
-    #     pickle.dump(employees, file)
-
-    bot.send_message(message.chat.id, f'Рад знакомству <b>{employee.name}</b>!\n{mess[0][3]}!', parse_mode='html')
+    bot.send_message(message.chat.id, f'Рад знакомству <b>{employee.name}</b>!\n{mess[99][3]}!', parse_mode='html')
     bot.send_message(message.chat.id, mess[0][7])
 
     bot.send_message(message.chat.id,
