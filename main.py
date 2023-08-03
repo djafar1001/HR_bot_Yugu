@@ -140,7 +140,7 @@ def start_dialog(message):
             bot.delete_message(call.message.chat.id, time_out.id)
             bot.send_message(call.message.chat.id,
                              mess[0][4],
-                             reply_markup=lib.simple_menu())
+                             reply_markup=lib.simple_menu(), disable_notification=True)
 
 
 @bot.message_handler(content_types=['text'])
@@ -151,7 +151,7 @@ def text_reaction(message):
             remove(path_file)
         except:
             bot.send_message(message.chat.id, f'Файл {path_file} не найден')
-    elif message.text == 'Прошел✔️':  # Реакция на нажатие кнопки "Прошел"
+    elif message.text == 'Прошел✔️' or message.text.lower() == 'прошел':  # Реакция на нажатие кнопки "Прошел"
 
         employees[message.chat.id].courses_completed[employees[message.chat.id].current_course - 1] = 1
         employees[message.chat.id].current_course += 1
