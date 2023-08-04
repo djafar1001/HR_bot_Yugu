@@ -45,16 +45,26 @@ class Employee:
 
 
 # Открываем или создаем словарь для хранения данных о сотрудниках
-if path.exists('employees.db'):
-    with open('employees.db', 'rb') as file:
+if path.exists('./data/employees.db'):
+    with open('./data/employees.db', 'rb') as file:
         employees = pickle.load(file)
 else:
     employees = {}
 
 
+def notification_9_00(employees_dict, chat_id):
+    """
+    Функция направляет push-сообщение пользователю для начала работы
+    :param employees_dict:
+    :param chat_id:
+    :return:
+    """
+    pass
+
+
 def dump_file():
     """Функция сохранения словаря пользователей в битный файл"""
-    with open('employees.db', 'wb') as file:  # !!!нужно создать функцию
+    with open('./data/employees.db', 'wb') as file:  # !!!нужно создать функцию
         pickle.dump(employees, file)
 
 
@@ -77,7 +87,7 @@ def handle_start(message, employee=None):
             answer = bot.send_message(message.chat.id, mess[99][2])
             bot.register_next_step_handler(answer, start_dialog)
         else:
-            employee = employees[message.chat.id]
+            employee = employees.get(message.chat.id, 'Нажмите еще раз команду меню /start')
             #       print(employee.__str__())
             #          bot.send_message(message.chat.id, employee.__str__())
             #       bot.send_message(message.chat.id, str(employee.courses_completed))
@@ -85,7 +95,10 @@ def handle_start(message, employee=None):
             if not all(employee.courses_completed):
                 bot.send_message(message.chat.id, 'Давайте продолжим', reply_markup=lib.simple_menu())
             else:
-                bot.send_message(message.chat.id, mess[0][8])
+                bot.send_message(message.chat.id, mess[99][9])
+
+
+
     elif message.text == '/help':
         help_m = bot.send_message(message.chat.id, HELP_MESS)
         sleep(12)
@@ -99,7 +112,7 @@ def handle_start(message, employee=None):
             bot.delete_message(message.chat.id, ms_2.id)
 
 
-def start_dialog(message):
+def start_dialog(message, оповещение=None):
     """
     Создание объекта сотрудника и сохранение его в словаре по
     идентификатору чата с последующей сериализацией в битовый файл.
@@ -113,11 +126,15 @@ def start_dialog(message):
     dump_file()  # Сохранение словаря сотрудников в файл
 
     bot.send_message(message.chat.id, f'Рад знакомству <b>{employee.name}</b>!\n{mess[99][3]}!', parse_mode='html')
-    bot.send_message(message.chat.id, mess[0][7])
+    bot.send_message(message.chat.id, mess[99][4])
 
-    bot.send_message(message.chat.id,
-                     mess[0][4],
-                     reply_markup=lib.simple_menu())
+    # передаем управление ботом модулю shedule
+    sleep(5)
+    notification_9_00(employees, message.chat.id)
+
+    # bot.send_message(message.chat.id,
+    #                  mess[0][4],
+    #                  reply_markup=lib.simple_menu())
 
     @bot.callback_query_handler(func=lambda call: True)
     def pressing_reaction(call):
