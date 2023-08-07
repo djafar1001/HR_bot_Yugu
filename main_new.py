@@ -9,7 +9,7 @@ continue - продолжение работы с ботом
 help - информация о нахождении курсов
 
 """
-from setings_HR import HR_BOT_TOKEN as TOKEN, BOT_MESSAGE as mess, HELP_MESS
+from setings_HR_new import HR_BOT_TOKEN as TOKEN, BOT_MESSAGE as mess, HELP_MESSAGE
 import HR_Lib as lib
 
 import telebot
@@ -27,12 +27,13 @@ class Employee:
     """Класс, представляющий нового сотрудника"""
 
     def __init__(self, name):
-        self.name = name
+        self.name = name   # Имя пользователя
         # self.training_start = lib.datetime.now()
-        self.training_start = time()
-        self.adaptation_dey = 1
-        self.current_course = 1
-        self.courses_completed = [0] * 5
+        self.training_start = time()   # Дата начала общения с чат ботом в Unix от начала эпохи
+        self.training_start = lib.time_begin()   # Дата начала общения с чат-ботом
+        self.adaptation_dey = 1  # Порядковый номер дня адаптации
+        self.current_course = 1  # Номер текущего курса
+        self.courses_completed = [0] * 14  # Список курсов по поряжку
 
     def info_time(self):
         time_begin = lib.format_time(self.training_start)
@@ -62,11 +63,6 @@ def notification_9_00(employees_dict, chat_id):
     pass
 
 
-def dump_file():
-    """Функция сохранения словаря пользователей в битный файл"""
-    with open('./data/employees.db', 'wb') as file:  # !!!нужно создать функцию
-        pickle.dump(employees, file)
-
 
 @bot.message_handler(commands=['start', 'help', 'continue', 'edit'])
 def handle_start(message, employee=None):
@@ -87,6 +83,7 @@ def handle_start(message, employee=None):
             answer = bot.send_message(message.chat.id, mess[99][2])
             bot.register_next_step_handler(answer, start_dialog)
         else:
+            #  ?????
             employee = employees.get(message.chat.id, 'Нажмите еще раз команду меню /start')
             #       print(employee.__str__())
             #          bot.send_message(message.chat.id, employee.__str__())
@@ -100,7 +97,7 @@ def handle_start(message, employee=None):
 
 
     elif message.text == '/help':
-        help_m = bot.send_message(message.chat.id, HELP_MESS)
+        help_m = bot.send_message(message.chat.id, HELP_MESSAGE)
         sleep(12)
         bot.delete_message(message.chat.id, help_m.id)
     elif message.text in ['/continue', '/edit']:
@@ -123,12 +120,13 @@ def start_dialog(message, оповещение=None):
     """
     employee = Employee(message.text)
     employees[message.chat.id] = employee
-    dump_file()  # Сохранение словаря сотрудников в файл
+    lib.dump_employees(employees)  # Сохранение изменения словаря в файл
 
     bot.send_message(message.chat.id, f'Рад знакомству <b>{employee.name}</b>!\n{mess[99][3]}!', parse_mode='html')
     bot.send_message(message.chat.id, mess[99][4])
 
     # передаем управление ботом модулю shedule
+
     sleep(5)
     notification_9_00(employees, message.chat.id)
 

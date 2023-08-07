@@ -1,6 +1,6 @@
 from datetime import datetime
 from telebot import types
-
+import pickle
 
 def format_time(timestamp) -> str:
     """
@@ -48,3 +48,18 @@ def sys_info(employees):
         file.write('id пользователя | информация о пользователе\n')
         for i_id, i_exploy in employees.items():
             file.write(f'  {i_id}     | {i_exploy}\n' )
+
+def time_begin():
+    return datetime.now()
+
+
+def dump_employees(employees):
+    """Функция сохранения словаря пользователей в битный файл"""
+    with open('./data/employees.db', 'wb') as file:  # !!!нужно создать функцию
+        pickle.dump(employees, file)
+
+# def user_verification(id_user, employees):
+#     if id_user in employees.keys():
+#
+#     else:
+#         return False
