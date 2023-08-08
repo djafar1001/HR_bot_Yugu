@@ -29,11 +29,12 @@ class Employee:
     def __init__(self, name):
         self.name = name   # Имя пользователя
         # self.training_start = lib.datetime.now()
-        self.training_start = time()   # Дата начала общения с чат ботом в Unix от начала эпохи
+        self.training_start = time()   # Дата начала общения с чат-ботом в Unix от начала эпохи
         self.training_start = lib.time_begin()   # Дата начала общения с чат-ботом
         self.adaptation_dey = 1  # Порядковый номер дня адаптации
         self.current_course = 1  # Номер текущего курса
-        self.courses_completed = [0] * 14  # Список курсов по поряжку
+        self.courses_completed = [0] * 14  # Список курсов по порядку
+        self.score_dey = [0] * 6 # Оценки дня поставленные пользователем
 
     def info_time(self):
         time_begin = lib.format_time(self.training_start)
@@ -60,12 +61,27 @@ def notification_9_00(employees_dict, chat_id):
     :param chat_id:
     :return:
     """
+    employee = employees_dict[chat_id]
+    bot.send_message(chat_id, f'{employee.adaptation_dey} день адаптации')
+    bot.send_message(chat_id, f'{mess[1][1]} {employee.name}!', disable_notification=True )
+    if employee.adaptation_dey == 1:
+        bot.send_message(chat_id, mess[1][2])
+        sleep(10)  # Действие в 10:00 первого дня
+        hr_phone = '+79876543210'
+        bot.send_message(chat_id,
+                         f'{mess[1][3]} <a href="tel:{hr_phone}">{hr_phone}</a>',
+                         parse_mode='HTML',
+                         disable_notification=True,)
+
+
+#    lib.day_score(employee)  # Оценка дня
+# -------------------------------------------------------
     pass
 
 
 
 @bot.message_handler(commands=['start', 'help', 'continue', 'edit'])
-def handle_start(message, employee=None):
+def handle_start(message):
     """
     После ввода команды /start Проверяем наличие пользователя в словаре сотрудников
     и в случае отсутствия запрашиваем его имя. Полученный результат передаем
@@ -76,11 +92,11 @@ def handle_start(message, employee=None):
     """
     if message.text == '/start':
         if message.chat.id not in employees.keys():
-            bot.send_message(message.chat.id, mess[99][1])  # Приветствие
+            bot.send_message(message.chat.id, mess[0][2])  # Приветствие
             with open('./pic/AnimatedSticker_hi.tgs', 'rb') as file:
                 bot.send_sticker(message.chat.id, file)
             # Запрос имени сотрудника
-            answer = bot.send_message(message.chat.id, mess[99][2])
+            answer = bot.send_message(message.chat.id, mess[0][3])
             bot.register_next_step_handler(answer, start_dialog)
         else:
             #  ?????
@@ -92,7 +108,7 @@ def handle_start(message, employee=None):
             if not all(employee.courses_completed):
                 bot.send_message(message.chat.id, 'Давайте продолжим', reply_markup=lib.simple_menu())
             else:
-                bot.send_message(message.chat.id, mess[99][9])
+                bot.send_message(message.chat.id, mess[99][5])
 
 
 
@@ -109,7 +125,7 @@ def handle_start(message, employee=None):
             bot.delete_message(message.chat.id, ms_2.id)
 
 
-def start_dialog(message, оповещение=None):
+def start_dialog(message):
     """
     Создание объекта сотрудника и сохранение его в словаре по
     идентификатору чата с последующей сериализацией в битовый файл.
@@ -122,44 +138,55 @@ def start_dialog(message, оповещение=None):
     employees[message.chat.id] = employee
     lib.dump_employees(employees)  # Сохранение изменения словаря в файл
 
-    bot.send_message(message.chat.id, f'Рад знакомству <b>{employee.name}</b>!\n{mess[99][3]}!', parse_mode='html')
-    bot.send_message(message.chat.id, mess[99][4])
+    bot.send_message(message.chat.id, f'Рад знакомству <b>{employee.name}</b>!\n{mess[0][1]}!', parse_mode='html')
+    bot.send_message(message.chat.id, mess[0][4])
+    sleep(5)
+    by_day = bot.send_message(message.chat.id, mess[0][6])
+
+    # Сткер прощания
+    with open('./pic/Wollfe_by.tgs', 'rb') as file:           # ************
+        hi_stiker = bot.send_sticker(message.chat.id, file)   # Нужно сделать функцию
+    sleep(5)                                                  #
+    bot.delete_message(message.chat.id, hi_stiker.id)         # ************
+    bot.edit_message_text('========+++++======', message.chat.id, by_day.id)         # ************
 
     # передаем управление ботом модулю shedule
 
-    sleep(5)
+    sleep(20)
     notification_9_00(employees, message.chat.id)
 
     # bot.send_message(message.chat.id,
     #                  mess[0][4],
     #                  reply_markup=lib.simple_menu())
 
-    @bot.callback_query_handler(func=lambda call: True)
-    def pressing_reaction(call):
-        if call.data == '1':
-            if employee.current_course > 3:
-                employee.adaptation_dey = 2
-            bot.edit_message_text(chat_id=call.message.chat.id,
-                                  message_id=call.message.id,
-                                  text=f'<b>{employee.name}</b> {mess[employee.adaptation_dey][employee.current_course]}',
-                                  parse_mode='html')
-            bot.send_message(call.message.chat.id, mess[0][5],
-                             reply_markup=lib.menu_ready(),
-                             parse_mode='html')
-        elif call.data == '0':
-            time_out = bot.send_message(call.message.chat.id, mess[0][9])
-            bot.delete_message(call.message.chat.id, call.message.id)
-            sleep(10)
-            bot.delete_message(call.message.chat.id, time_out.id)
-            bot.send_message(call.message.chat.id,
-                             mess[0][4],
-                             reply_markup=lib.simple_menu())
+@bot.callback_query_handler(func=lambda call: True)
+def pressing_reaction(call):
+    employee = employees[call.message.chat.id] # Идентификация пользователя
+
+    if call.data == '1':
+        if employee.current_course > 3:
+            employee.adaptation_dey = 2
+        bot.edit_message_text(chat_id=call.message.chat.id,
+                              message_id=call.message.id,
+                              text=f'<b>{employee.name}</b> {mess[employee.adaptation_dey][employee.current_course]}',
+                              parse_mode='html')
+        bot.send_message(call.message.chat.id, mess[0][5],
+                         reply_markup=lib.menu_ready(),
+                         parse_mode='html')
+    elif call.data == '0':
+        time_out = bot.send_message(call.message.chat.id, mess[0][9])
+        bot.delete_message(call.message.chat.id, call.message.id)
+        sleep(10)
+        bot.delete_message(call.message.chat.id, time_out.id)
+        bot.send_message(call.message.chat.id,
+                         mess[0][4],
+                         reply_markup=lib.simple_menu())
 
 
 @bot.message_handler(content_types=['text'])
 def text_reaction(message):
     if message.text.lower() == 'удалить' or message.text.lower() == 'elfkbnm':
-        path_file = './bin/employees.db'
+        path_file = './data/employees.db'
         try:
             remove(path_file)
         except:
