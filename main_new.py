@@ -16,6 +16,7 @@ import telebot
 from telebot import types
 from os import path, remove
 
+import schedule
 import pickle
 from time import time, sleep
 
@@ -32,7 +33,7 @@ class Employee:
         self.training_start = time()   # Дата начала общения с чат-ботом в Unix от начала эпохи
         self.training_start = lib.time_begin()   # Дата начала общения с чат-ботом
         self.adaptation_dey = 1  # Порядковый номер дня адаптации
-        self.current_course = 1  # Номер текущего курса
+        self.current_course = 0  # Номер текущего курса
         self.courses_completed = [0] * 14  # Список курсов по порядку
         self.score_dey = [0] * 6 # Оценки дня поставленные пользователем
 
@@ -72,6 +73,10 @@ def notification_9_00(employees_dict, chat_id):
                          f'{mess[1][3]} <a href="tel:{hr_phone}">{hr_phone}</a>',
                          parse_mode='HTML',
                          disable_notification=True,)
+        sleep(12)
+        bot.send_message(chat_id,
+                         f'{employee.name}, {mess[1][4]}',
+                         reply_markup=lib.simple_menu('Yes_HR','No_HR'))
 
 
 #    lib.day_score(employee)  # Оценка дня
@@ -181,7 +186,19 @@ def pressing_reaction(call):
         bot.send_message(call.message.chat.id,
                          mess[0][4],
                          reply_markup=lib.simple_menu())
+    #'Yes_HR','No_HR'
+    elif call.data == 'Yes_HR':
+        bot.send_message(call.message.chat.id, mess[1][5])
 
+    elif call.data == 'No_HR':
+        time_out = bot.send_message(call.message.chat.id, mess[99][6])
+        sleep(5)
+        bot.delete_message(call.message.chat.id, time_out.id - 1)
+        bot.delete_message(call.message.chat.id, time_out.id)
+        bot.send_message(call.message.chat.id,
+                         f'{employee.name}, {mess[1][4]}',
+                         reply_markup=lib.simple_menu('Yes_HR','No_HR'))
+        pass
 
 @bot.message_handler(content_types=['text'])
 def text_reaction(message):
