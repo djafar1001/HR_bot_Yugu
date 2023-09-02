@@ -1,5 +1,5 @@
 import telebot
-import schedule
+import shedule
 import time
 from datetime import datetime, timedelta
 import workdays

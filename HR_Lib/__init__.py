@@ -1,4 +1,5 @@
 from datetime import datetime
+
 from telebot import types
 import pickle
 
@@ -14,7 +15,7 @@ def format_time(timestamp) -> str:
     return df_time
 
 
-def simple_menu(call_yes='1', call_no='0'):
+def simple_menu(call_yes='yes', call_no='no'):
     """
     Функция определения Inline-меню с двумя кнопками "Да" и "Нет"
     :return: markup: InlineKeyboard
@@ -66,3 +67,5 @@ def dump_employees(employees):
 def day_score(employee):
 
     pass
+
+

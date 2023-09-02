@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="d45757aa-8889-4849-89a4-087695c0dd9b" name="Changes" comment="Переработка 1 дня">
+    <list default="true" id="d45757aa-8889-4849-89a4-087695c0dd9b" name="Changes" comment="добавлена функция создания файла с информацией о пользователях">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DT_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/DT_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HR_Lib/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/HR_Lib/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Test.py" beforeDir="false" afterPath="$PROJECT_DIR$/Test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_new.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_new.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/setings_HR_new.py" beforeDir="false" afterPath="$PROJECT_DIR$/setings_HR_new.py" afterDir="false" />
@@ -132,7 +137,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="test_bot" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="HR_bot_Yugu" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -144,7 +149,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test_bot.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -156,10 +161,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.main_new" />
-        <item itemvalue="Python.test" />
         <item itemvalue="Python.main" />
         <item itemvalue="Python.Test" />
         <item itemvalue="Python.poll_test" />
+        <item itemvalue="Python.test_bot" />
       </list>
     </recent_temporary>
   </component>
@@ -242,28 +247,7 @@
       <option name="project" value="LOCAL" />
       <updated>1689949877727</updated>
     </task>
-    <task id="LOCAL-00011" summary="Начало переделки start">
-      <created>1691157427254</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1691157427254</updated>
-    </task>
-    <task id="LOCAL-00012" summary="Начало переделки start">
-      <created>1691430895262</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1691430895262</updated>
-    </task>
-    <task id="LOCAL-00013" summary="Переработка 1 дня">
-      <created>1691516482425</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1691516482425</updated>
-    </task>
-    <option name="localTasksCounter" value="14" />
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -287,8 +271,6 @@
     <MESSAGE value="мелкие корректировки по коду. Добавление заглушек на неработающий контент" />
     <MESSAGE value="добавлена функция создания файла с информацией о пользователях" />
     <MESSAGE value="Мелкие корректировки" />
-    <MESSAGE value="Начало переделки start" />
-    <MESSAGE value="Переработка 1 дня" />
-    <option name="LAST_COMMIT_MESSAGE" value="Переработка 1 дня" />
+    <option name="LAST_COMMIT_MESSAGE" value="Мелкие корректировки" />
   </component>
 </project>

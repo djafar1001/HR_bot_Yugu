@@ -1,42 +1,57 @@
-TOKEN_T_BOT = {'name': '@Lear_telebot',
-               'URL': 'https://t.me/Lear_telebot',
-               'token': '5648782056:AAFw_vHn2dtZ5gvS_vOaz-_t2UnXVpimzgk'}
-#from setings_HR import HR_BOT_TOKEN as TOKEN
 import telebot
-import schedule
-import time
-#from telebot import types
-#from time import sleep
+from telebot import types
 
-# Создание экземпляра бота
-bot = telebot.TeleBot('5648782056:AAFw_vHn2dtZ5gvS_vOaz-_t2UnXVpimzgk')
+bot = telebot.TeleBot("YOUR_BOT_TOKEN")
 
-# Словарь для хранения пользователей и их задач
-users = {}
+# Глобальный словарь для хранения текущего вопроса для каждого пользователя
+current_question = {}
 
-class User:
-    def __init__(self, user_id):
-        self.user_id = user_id
-        self.task_scheduled = False
-
-    def schedule_task(self):
-        if not self.task_scheduled:
-            # Планируем задачу для пользователя
-            schedule.every().day.at("09:00").do(self.send_task_notification)
-            self.task_scheduled = True
-
-    def send_task_notification(self):
-        bot.send_message(self.user_id, "Задача для вас!")
+# Вопросы для опроса
+questions = [
+    "Вопрос 1: Рабочее место было организовано?",
+    "Вопрос 2: Почта подключена?",
+    "Вопрос 3: Удалось познакомиться с твоей командой?",
+    "Вопрос 4: Ты передал все документы для оформления в hr-службу?",
+    "Вопрос 5: Понятно ли, где можно пообедать?",
+    "Вопрос 6: Ты ознакомился с рабочим графиком?"
+]
 
 @bot.message_handler(commands=['start'])
-def handle_start(message):
+def start(message):
     user_id = message.chat.id
+    current_question[user_id] = 0  # Инициализация текущего вопроса
+    send_current_question(user_id)
 
-    if user_id not in users:
-        users[user_id] = User(user_id)
-        bot.send_message(user_id, "Вы добавлены в систему. Задача будет запланирована для вас.")
+def send_current_question(user_id):
+    if user_id in current_question:
+        question_index = current_question[user_id]
+        if question_index < len(questions):
+            question_text = questions[question_index]
+            markup = create_inline_keyboard()
+            bot.send_message(user_id, question_text, reply_markup=markup)
+        else:
+            bot.send_message(user_id, "Опрос завершен.")
+    else:
+        bot.send_message(user_id, "Опрос не найден. Начните с команды /start.")
 
-    # Планирование задачи для пользователя
-    users[user_id].schedule_task()
+def create_inline_keyboard():
+    markup = types.InlineKeyboardMarkup()
+    yes_button = types.InlineKeyboardButton("Да", callback_data="yes")
+    no_button = types.InlineKeyboardButton("Нет", callback_data="no")
+    markup.add(yes_button, no_button)
+    return markup
+
+@bot.callback_query_handler(func=lambda call: call.data in ["yes", "no"])
+def callback_handler(call):
+    user_id = call.message.chat.id
+    if user_id in current_question:
+        question_index = current_question[user_id]
+        if question_index < len(questions):
+            current_question[user_id] += 1  # Переходим к следующему вопросу
+            send_current_question(user_id)
+            # Удаление сообщения с предыдущим вопросом и InlineKeyboard
+            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text="Ваш ответ: " + call.data)
+    else:
+        bot.send_message(user_id, "Опрос не найден. Начните с команды /start.")
 
 bot.polling()
