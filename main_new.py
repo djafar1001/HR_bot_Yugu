@@ -40,6 +40,26 @@ class Employee:
         self.check_score = 0
         self.adaptation_completed = False
 
+#  Копия функции для попытки аптимизмции
+#     def questionnaire_first_day(self, id_chat):
+#         """
+#         Функция опросника в первый рабочий день. Данные заносятся в self.score_dey
+#         да - 1, нет - 0 вопросы берутся из словаря questions файла setings_HR_new
+#         :return:
+#         """
+#         info_quest = bot.send_message(id_chat, mess[99][8])
+#
+#
+#         for i_index, i_quest in QUESTIONS.items():
+#             question = bot.send_message(id_chat,
+#                                         i_quest,
+#                                         reply_markup=lib.simple_menu('Yes_Q', 'No_Q'))
+#             sleep(5)
+#             #bot.send_message(id_chat, str(self.check_score))
+#             self.score_dey[i_index - 1] = self.check_score
+#             bot.delete_message(id_chat, question.id)
+#
+#         bot.send_message(id_chat, mess[99][9])
     def questionnaire_first_day(self, id_chat):
         """
         Функция опросника в первый рабочий день. Данные заносятся в self.score_dey
@@ -58,7 +78,15 @@ class Employee:
             bot.delete_message(id_chat, question.id)
 
         bot.send_message(id_chat, mess[99][9])
-
+        # self.adaptation_dey = 2
+        # # передаем управление ботом модулю shedule
+        # # schedule.every().day.until('09:00').do(notification_9_00, employees, message.chat.id)
+        #
+        # # временная замена schedule
+        # sleep(20)
+        # bot.send_message(message.chat.id, '======= Наступил 1 день адаптации======')
+        # notification_9_00(employees, message.chat.id)
+        # # ======================================
 
     def info_time(self):
         time_begin = lib.format_time(self.training_start)
@@ -81,6 +109,11 @@ else:
 # Требуется создания функции проверки состояния процесса адаптации для всех пользователей
 
 # ==============================================
+def request_adaptation():
+    pass
+
+
+
 def element_develop(chat_id):
     """
     Функция заглушка на неработающие элементы
@@ -215,10 +248,6 @@ def start_dialog(message):
     notification_9_00(employees, message.chat.id)
     # ======================================
 
-    # bot.send_message(message.chat.id,
-    #                  mess[0][4],
-    #                  reply_markup=lib.simple_menu())
-
 
 @bot.callback_query_handler(func=lambda call: True)
 def pressing_reaction(call):
@@ -264,6 +293,7 @@ def pressing_reaction(call):
     # 'yes_answer', 'no_answer' реакция на приглашение к опросу
     elif call.data == 'yes_answer':
         employee.questionnaire_first_day(call.message.chat.id)
+
     elif call.data == 'no_answer':
         element_develop(call.message.chat.id)
         pass

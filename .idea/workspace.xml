@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d45757aa-8889-4849-89a4-087695c0dd9b" name="Changes" comment="добавлена функция создания файла с информацией о пользователях">
+    <list default="true" id="d45757aa-8889-4849-89a4-087695c0dd9b" name="Changes" comment="доработка 1 дня и организация опросника в этот день">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DT_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/DT_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HR_Lib/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/HR_Lib/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Test.py" beforeDir="false" afterPath="$PROJECT_DIR$/Test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_new.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_new.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/setings_HR_new.py" beforeDir="false" afterPath="$PROJECT_DIR$/setings_HR_new.py" afterDir="false" />
@@ -247,7 +245,14 @@
       <option name="project" value="LOCAL" />
       <updated>1689949877727</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="доработка 1 дня и организация опросника в этот день">
+      <created>1693689435394</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1693689435394</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -271,6 +276,7 @@
     <MESSAGE value="мелкие корректировки по коду. Добавление заглушек на неработающий контент" />
     <MESSAGE value="добавлена функция создания файла с информацией о пользователях" />
     <MESSAGE value="Мелкие корректировки" />
-    <option name="LAST_COMMIT_MESSAGE" value="Мелкие корректировки" />
+    <MESSAGE value="доработка 1 дня и организация опросника в этот день" />
+    <option name="LAST_COMMIT_MESSAGE" value="доработка 1 дня и организация опросника в этот день" />
   </component>
 </project>
