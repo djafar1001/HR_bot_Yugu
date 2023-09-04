@@ -28,8 +28,9 @@ bot = telebot.TeleBot(TOKEN['token'])  # привязка бота к коду
 class Employee:
     """Класс, представляющий параметры и функции сотрудника"""
 
-    def __init__(self, name):
+    def __init__(self, name, id_user):
         self.name = name  # Имя пользователя
+        self.id_user = id_user # ID сата и пользователя
         # self.training_start = lib.datetime.now()
         self.training_start = time()  # Дата начала общения с чат-ботом в Unix от начала эпохи
         #self.training_start = lib.time_begin()  # Дата начала общения с чат-ботом
@@ -60,24 +61,24 @@ class Employee:
 #             bot.delete_message(id_chat, question.id)
 #
 #         bot.send_message(id_chat, mess[99][9])
-    def questionnaire_first_day(self, id_chat):
+    def questionnaire_first_day(self):
         """
         Функция опросника в первый рабочий день. Данные заносятся в self.score_dey
         да - 1, нет - 0 вопросы берутся из словаря questions файла setings_HR_new
         :return:
         """
-        bot.send_message(id_chat, mess[99][8])
+        bot.send_message(self.id_user, mess[99][8])
 
         for i_index, i_quest in QUESTIONS.items():
-            question = bot.send_message(id_chat,
+            question = bot.send_message(self.id_user,
                                         i_quest,
                                         reply_markup=lib.simple_menu('Yes_Q', 'No_Q'))
             sleep(5)
             #bot.send_message(id_chat, str(self.check_score))
             self.score_dey[i_index - 1] = self.check_score
-            bot.delete_message(id_chat, question.id)
+            bot.delete_message(self.id_user, question.id)
 
-        bot.send_message(id_chat, mess[99][9])
+        bot.send_message(self.id_user, mess[99][9])
         # self.adaptation_dey = 2
         # # передаем управление ботом модулю shedule
         # # schedule.every().day.until('09:00').do(notification_9_00, employees, message.chat.id)
@@ -87,6 +88,8 @@ class Employee:
         # bot.send_message(message.chat.id, '======= Наступил 1 день адаптации======')
         # notification_9_00(employees, message.chat.id)
         # # ======================================
+    def begin_adapt(self):
+
 
     def info_time(self):
         time_begin = lib.format_time(self.training_start)
@@ -221,7 +224,7 @@ def start_dialog(message):
     :param message:
     :return:
     """
-    employee = Employee(message.text)
+    employee = Employee(message.text, message.chat.id)
     employees[message.chat.id] = employee
     lib.dump_employees(employees)  # Сохранение изменения словаря в файл
 
@@ -292,7 +295,7 @@ def pressing_reaction(call):
                          reply_markup=lib.simple_menu('Yes_HR', 'No_HR'))
     # 'yes_answer', 'no_answer' реакция на приглашение к опросу
     elif call.data == 'yes_answer':
-        employee.questionnaire_first_day(call.message.chat.id)
+        employee.questionnaire_first_day()
 
     elif call.data == 'no_answer':
         element_develop(call.message.chat.id)
