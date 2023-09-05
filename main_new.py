@@ -9,7 +9,9 @@ continue - продолжение работы с ботом
 help - информация о нахождении курсов
 
 """
-from setings_HR_new import HR_BOT_TOKEN as TOKEN, BOT_MESSAGE as mess, HELP_MESSAGE, QUESTIONS
+from setings_HR_new import HR_BOT_TOKEN as TOKEN, \
+    BOT_MESSAGE as mess, \
+    HELP_MESSAGE, QUESTIONS
 import HR_Lib as lib
 
 import telebot
@@ -30,10 +32,10 @@ class Employee:
 
     def __init__(self, name, id_user):
         self.name = name  # Имя пользователя
-        self.id_user = id_user # ID сата и пользователя
+        self.id_user = id_user  # ID сата и пользователя
         # self.training_start = lib.datetime.now()
         self.training_start = time()  # Дата начала общения с чат-ботом в Unix от начала эпохи
-        #self.training_start = lib.time_begin()  # Дата начала общения с чат-ботом
+        # self.training_start = lib.time_begin()  # Дата начала общения с чат-ботом
         self.adaptation_dey = 0  # Порядковый номер дня адаптации
         self.current_course = 0  # Номер текущего курса
         self.courses = [0] * 14  # Список курсов по порядку
@@ -41,26 +43,26 @@ class Employee:
         self.check_score = 0
         self.adaptation_completed = False
 
-#  Копия функции для попытки аптимизмции
-#     def questionnaire_first_day(self, id_chat):
-#         """
-#         Функция опросника в первый рабочий день. Данные заносятся в self.score_dey
-#         да - 1, нет - 0 вопросы берутся из словаря questions файла setings_HR_new
-#         :return:
-#         """
-#         info_quest = bot.send_message(id_chat, mess[99][8])
-#
-#
-#         for i_index, i_quest in QUESTIONS.items():
-#             question = bot.send_message(id_chat,
-#                                         i_quest,
-#                                         reply_markup=lib.simple_menu('Yes_Q', 'No_Q'))
-#             sleep(5)
-#             #bot.send_message(id_chat, str(self.check_score))
-#             self.score_dey[i_index - 1] = self.check_score
-#             bot.delete_message(id_chat, question.id)
-#
-#         bot.send_message(id_chat, mess[99][9])
+    #  Копия функции для попытки аптимизмции
+    #     def questionnaire_first_day(self, id_chat):
+    #         """
+    #         Функция опросника в первый рабочий день. Данные заносятся в self.score_dey
+    #         да - 1, нет - 0 вопросы берутся из словаря questions файла setings_HR_new
+    #         :return:
+    #         """
+    #         info_quest = bot.send_message(id_chat, mess[99][8])
+    #
+    #
+    #         for i_index, i_quest in QUESTIONS.items():
+    #             question = bot.send_message(id_chat,
+    #                                         i_quest,
+    #                                         reply_markup=lib.simple_menu('Yes_Q', 'No_Q'))
+    #             sleep(5)
+    #             #bot.send_message(id_chat, str(self.check_score))
+    #             self.score_dey[i_index - 1] = self.check_score
+    #             bot.delete_message(id_chat, question.id)
+    #
+    #         bot.send_message(id_chat, mess[99][9])
     def questionnaire_first_day(self):
         """
         Функция опросника в первый рабочий день. Данные заносятся в self.score_dey
@@ -74,7 +76,7 @@ class Employee:
                                         i_quest,
                                         reply_markup=lib.simple_menu('Yes_Q', 'No_Q'))
             sleep(5)
-            #bot.send_message(id_chat, str(self.check_score))
+            # bot.send_message(id_chat, str(self.check_score))
             self.score_dey[i_index - 1] = self.check_score
             bot.delete_message(self.id_user, question.id)
 
@@ -88,8 +90,9 @@ class Employee:
         # bot.send_message(message.chat.id, '======= Наступил 1 день адаптации======')
         # notification_9_00(employees, message.chat.id)
         # # ======================================
-    def begin_adapt(self):
 
+    def begin_adapt(self):
+        pass
 
     def info_time(self):
         time_begin = lib.format_time(self.training_start)
@@ -109,12 +112,12 @@ if path.exists('./data/employees.db'):
 else:
     employees = {}
 
+
 # Требуется создания функции проверки состояния процесса адаптации для всех пользователей
 
 # ==============================================
 def request_adaptation():
     pass
-
 
 
 def element_develop(chat_id):
@@ -128,6 +131,8 @@ def element_develop(chat_id):
         sleep(5)
         bot.delete_message(chat_id, ms_1.id)
         bot.delete_message(chat_id, ms_2.id)
+
+
 # ==============================================
 
 def notification_9_00(employees_dict, chat_id):
@@ -147,19 +152,21 @@ def notification_9_00(employees_dict, chat_id):
     if employee.adaptation_dey == 1:
         bot.send_message(chat_id, mess[1][2])
         # sleep(3600)  # Действие в 10:00 первого дня
-        sleep(5)
+        sleep(6)
         bot.send_message(chat_id, '====10:00====')
-        hr_phone = '+79876543210'
+        hr_phone = '+79876543210'  # телефон HR службы
         bot.send_message(chat_id,
                          f'{mess[1][3]} <a href="tel:{hr_phone}">{hr_phone}</a>',
                          parse_mode='HTML',
                          disable_notification=True, )
-        bot.send_message(chat_id, '====12:00====')
+        # sleep(7200)  # Действие в 12:00 первого дня
         sleep(12)
+        bot.send_message(chat_id, '====12:00====')
+
         bot.send_message(chat_id,
                          f'{employee.name}, {mess[1][4]}',
-                         reply_markup=lib.simple_menu('Yes_HR', 'No_HR'), timeout=10)
-
+                         reply_markup=lib.simple_menu('Yes_HR', 'No_HR'),
+                         disable_notification=True)
 
     #  lib.day_score(employee)  # Оценка дня
 
@@ -193,7 +200,7 @@ def handle_start(message):
             #          bot.send_message(message.chat.id, employee.__str__())
             #       bot.send_message(message.chat.id, str(employee.courses_completed))
 
-#            if not all(employee.courses):
+            #            if not all(employee.courses):
             if employee.adaptation_completed:
                 bot.send_message(message.chat.id, mess[99][5])
             else:
@@ -234,20 +241,19 @@ def start_dialog(message):
     by_day = bot.send_message(message.chat.id, mess[0][6])
 
     # Сткер прощания
-    with open('./pic/Wollfe_by.tgs', 'rb') as file:          # ************
+    with open('./pic/Wollfe_by.tgs', 'rb') as file:  # ************
         hi_stiker = bot.send_sticker(message.chat.id, file)  # Нужно сделать функцию
     sleep(10)
     # удаляем стикер и надпись прощания
-    bot.delete_message(message.chat.id, hi_stiker.id)                         # ************
-    bot.edit_message_text('========+++++======', message.chat.id, by_day.id)  # ************
-
+    bot.delete_message(message.chat.id, hi_stiker.id)  # ************
     employee.adaptation_dey = 1
-    # передаем управление ботом модулю shedule
-    #schedule.every().day.until('09:00').do(notification_9_00, employees, message.chat.id)
 
-    # временная замена schedule
-    sleep(20)
-    bot.send_message(message.chat.id, '======= Наступил 1 день адаптации======')
+    # передаем управление ботом модулю shedule
+    # schedule.every().day.until('09:00').do(notification_9_00, employees, message.chat.id)
+
+    # ======временная замена schedule
+    sleep(10)
+    bot.edit_message_text('====Наступил 1 день адаптации====', message.chat.id, by_day.id)  # ************
     notification_9_00(employees, message.chat.id)
     # ======================================
 
@@ -276,14 +282,17 @@ def pressing_reaction(call):
                          reply_markup=lib.simple_menu())
     # 'Yes_HR','No_HR' реакция о вопросе про документы
     elif call.data == 'Yes_HR':
-        bot.send_message(call.message.chat.id, mess[1][5])
+        chif = bot.edit_message_text(mess[1][5], call.message.chat.id, call.message.id)
 
-        sleep(5)                                                 # установка таймера на 4 часа после сообщения
-        bot.send_message(call.message.chat.id, '====Прошло 4 часа====')  # 14 400 сек =============================
+        # sleep(18000)    # установка таймера на 5 часа после сообщения
+        sleep(8)
+        bot.delete_message(call.message.chat.id, chif.id)
+        bot.send_message(call.message.chat.id, '====17:00====')
 
         bot.send_message(call.message.chat.id,
                          mess[1][6],
-                         reply_markup=lib.simple_menu(call_yes='yes_answer', call_no='no_answer'))
+                         reply_markup=lib.simple_menu(call_yes='yes_answer', call_no='no_answer'),
+                         disable_notification=True)
     elif call.data == 'No_HR':
         time_out = bot.send_message(call.message.chat.id, mess[99][6])
         sleep(5)
@@ -313,8 +322,11 @@ def text_reaction(message):
         path_file = './data/employees.db'
         try:
             remove(path_file)
-        except:
+        except Exception:
             bot.send_message(message.chat.id, f'Файл {path_file} не найден')
+
+
+    # ========== Переделать с учетом изменения в словаре сообщений
     elif message.text == 'Прошел✔️':  # Реакция на нажатие кнопки "Прошел"
 
         employees[message.chat.id].courses_completed[employees[message.chat.id].current_course - 1] = 1
