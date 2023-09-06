@@ -40,21 +40,26 @@ class Employee:
         self.current_course = 0  # Номер текущего курса
         self.courses = [0] * 14  # Список курсов по порядку
         self.score_dey = [0] * 6  # Оценки первого дня поставленные пользователем
+        self.name_questionnaire = QUEST_FIRST_LIST
         self.check_score = 0  # Значение оценки для опросника (1-да, 0-нет)
         self.adaptation_completed = False  # параметр окончания адаптации
         self.index_question = 0  # Индекс вопросов в списке опросника
 
 
 
-    def questionnaire_first_day(self, id_mess, quest_list):
+    def survey_first_day(self, id_mess, quest_list):
         """
         Функция опросника в первый рабочий день. Данные заносятся в self.score_dey
         да - 1, нет - 0 вопросы берутся из словаря questions файла setings_HR_new
         :return:
         """
-        # info_quest = bot.send_message(self.id_user, mess[99][8])
-        # index_question = 0
         if self.index_question < len(quest_list):
+            # bot.send_message(self.id_user, '====message test====')
+            # bot.send_message(self.id_user, f'вопрос: {quest_list[self.index_question]}\n'
+            #                                f'id чата:{self.id_user}\n'
+            #                                f'id сообщения:{id_mess}\n'
+            #                                f'{type(id_mess)}')
+
             bot.edit_message_text(quest_list[self.index_question],
                                   self.id_user,
                                   id_mess,
@@ -64,6 +69,14 @@ class Employee:
                                   self.id_user,
                                   id_mess)
             self.index_question = 0
+            self.adaptation_dey = 2
+            # передаем управление ботом модулю shedule
+            # schedule.every().day.until('09:00').do(notification_9_00, employees, message.chat.id)
+            #
+            # # временная замена schedule
+            sleep(10)
+            bot.send_message(self.id_user, '======= Наступил 2 день адаптации======')
+            notification_9_00(employees, self.id_user)
 
     # def questionnaire_first_day(self):
     #     """
@@ -150,7 +163,7 @@ def notification_9_00(employees_dict, chat_id):
     # ====================================
     bot.send_message(chat_id, f'{mess[1][1]} {employee.name}!', disable_notification=True)
     if employee.adaptation_dey == 1:
-        bot.send_message(chat_id, mess[1][2])
+        bot.send_message(chat_id, mess[1][2], disable_notification=False)
         # sleep(3600)  # Действие в 10:00 первого дня
         sleep(6)
         bot.send_message(chat_id, '====10:00====')
@@ -167,7 +180,17 @@ def notification_9_00(employees_dict, chat_id):
                          f'{employee.name}, {mess[1][4]}',
                          reply_markup=lib.simple_menu('Yes_HR', 'No_HR'),
                          disable_notification=True)
-
+    elif employee.adaptation_dey == 2:
+        bot.send_message(chat_id,
+                         mess[99][2],
+                         disable_notification=True,
+                         reply_markup=lib.simple_menu())
+# ++++++++++++++++++++++++++++++++++++++++++++
+        # bot.edit_message_text(mess[99][2],
+        #                       chat_id,
+        #                       inline_message_id=mess[99][9],
+        #                       reply_markup=lib.simple_menu())
+        pass
     #  lib.day_score(employee)  # Оценка дня
 
     pass
@@ -243,7 +266,7 @@ def start_dialog(message):
     # Сткер прощания
     with open('./pic/Wollfe_by.tgs', 'rb') as file:  # ************
         hi_stiker = bot.send_sticker(message.chat.id, file)  # Нужно сделать функцию
-    sleep(10)
+    sleep(3)
     # удаляем стикер и надпись прощания
     bot.delete_message(message.chat.id, hi_stiker.id)  # ************
     employee.adaptation_dey = 1
@@ -305,20 +328,22 @@ def pressing_reaction(call):
     # 'yes_answer', 'no_answer' реакция на приглашение к опросу
     elif call.data == 'yes_answer':
         id_mess = bot.edit_message_text(mess[99][8], call.message.chat.id, call.message.id)
-        employee.questionnaire_first_day(id_mess, QUEST_FIRST_LIST)
+        employee.survey_first_day(id_mess.id, QUEST_FIRST_LIST)
 
     elif call.data == 'no_answer':
         element_develop(call.message.chat.id)
         pass
     #  'Yes_Q', 'No_Q' реакция на опрос первого дня
     elif call.data == 'Yes_Q':
-        employee.check_score = 1
+        #employee.check_score = 1
+        employee.score_dey[employee.index_question] = 1
         employee.index_question += 1
-        employee.questionnaire_first_day(call.message.id, QUEST_FIRST_LIST)
+        employee.survey_first_day(call.message.id, QUEST_FIRST_LIST)
     elif call.data == 'No_Q':
-        employee.check_score = 0
+        #employee.check_score = 0
+        employee.score_dey[employee.index_question] = 0
         employee.index_question += 1
-        employee.questionnaire_first_day(call.message.id, QUEST_FIRST_LIST)
+        employee.survey_first_day(call.message.id, QUEST_FIRST_LIST)
 
 
 @bot.message_handler(content_types=['text'])

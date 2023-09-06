@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="d45757aa-8889-4849-89a4-087695c0dd9b" name="Changes" comment="Корректировка вывода сообщений первого дня">
+    <list default="true" id="d45757aa-8889-4849-89a4-087695c0dd9b" name="Changes" comment="доработка 1 дня и организация опросника в этот день">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Test.py" beforeDir="false" afterPath="$PROJECT_DIR$/Test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_new.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_new.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/setings_HR_new.py" beforeDir="false" afterPath="$PROJECT_DIR$/setings_HR_new.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -306,16 +308,5 @@
     <MESSAGE value="мелкие изменения" />
     <MESSAGE value="Корректировка вывода сообщений первого дня" />
     <option name="LAST_COMMIT_MESSAGE" value="Корректировка вывода сообщений первого дня" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main_new.py</url>
-          <line>54</line>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
