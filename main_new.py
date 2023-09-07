@@ -11,7 +11,7 @@ help - информация о нахождении курсов
 """
 from setings_HR_new import HR_BOT_TOKEN as TOKEN, \
     BOT_MESSAGE as mess, \
-    HELP_MESSAGE, QUESTIONS, QUEST_FIRST_LIST
+    HELP_MESSAGE, QUESTIONS, QUEST_FIRST_LIST, QUEST_SECOND_LIST
 import HR_Lib as lib
 
 import telebot
@@ -37,7 +37,7 @@ class Employee:
         self.training_start = time()  # Дата начала общения с чат-ботом в Unix от начала эпохи
         # self.training_start = lib.time_begin()  # Дата начала общения с чат-ботом
         self.adaptation_dey = 0  # Порядковый номер дня адаптации
-        self.current_course = 0  # Номер текущего курса
+        self.current_course = 1  # Номер текущего курса
         self.courses = [0] * 14  # Список курсов по порядку
         self.score_dey = [0] * 6  # Оценки первого дня поставленные пользователем
         self.name_questionnaire = QUEST_FIRST_LIST
@@ -288,15 +288,26 @@ def pressing_reaction(call):
     employee = employees[call.message.chat.id]  # Идентификация пользователя
 
     if call.data == 'yes':
-        if employee.current_course > 3:
-            employee.adaptation_dey = 2
+        if employee.current_course < 7:
+            employee.adaptation_dey = 3
+
         bot.edit_message_text(chat_id=call.message.chat.id,
                               message_id=call.message.id,
                               text=f'<b>{employee.name}</b> {mess[employee.adaptation_dey][employee.current_course]}',
                               parse_mode='html')
-        bot.send_message(call.message.chat.id, mess[0][5],
+        bot.send_message(call.message.chat.id, mess[99][3],
                          reply_markup=lib.menu_ready(),
                          parse_mode='html')
+    # if call.data == 'yes':
+    #     if employee.current_course > 3:
+    #         employee.adaptation_dey = 2
+    #     bot.edit_message_text(chat_id=call.message.chat.id,
+    #                           message_id=call.message.id,
+    #                           text=f'<b>{employee.name}</b> {mess[employee.adaptation_dey][employee.current_course]}',
+    #                           parse_mode='html')
+    #     bot.send_message(call.message.chat.id, mess[0][5],
+    #                      reply_markup=lib.menu_ready(),
+    #                      parse_mode='html')
     elif call.data == 'no':
         time_out = bot.send_message(call.message.chat.id, mess[0][9])
         bot.delete_message(call.message.chat.id, call.message.id)
