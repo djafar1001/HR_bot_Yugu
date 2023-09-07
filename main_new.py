@@ -54,11 +54,6 @@ class Employee:
         :return:
         """
         if self.index_question < len(quest_list):
-            # bot.send_message(self.id_user, '====message test====')
-            # bot.send_message(self.id_user, f'вопрос: {quest_list[self.index_question]}\n'
-            #                                f'id чата:{self.id_user}\n'
-            #                                f'id сообщения:{id_mess}\n'
-            #                                f'{type(id_mess)}')
 
             bot.edit_message_text(quest_list[self.index_question],
                                   self.id_user,
@@ -70,7 +65,7 @@ class Employee:
                                   id_mess)
             self.index_question = 0
             self.adaptation_dey = 2
-            # передаем управление ботом модулю shedule
+            # передаем управление ботом модулю schedule
             # schedule.every().day.until('09:00').do(notification_9_00, employees, message.chat.id)
             #
             # # временная замена schedule
@@ -118,6 +113,13 @@ class Employee:
         return f'Пользователь {self.name} начал адаптацию {lib.format_time(self.training_start)}' \
                f'сейчас изучает курс {self.current_course} всего изучено {str(self.courses)},' \
                f'опрос 1 дня {self.score_dey}'
+
+    def test_message(self):
+        """!!!ВРЕМЕННАЯ!!!Функция вывода тестового сообщения!!! """
+        bot.send_message(self.id_user, '====message test====')
+        bot.send_message(self.id_user, f'вопрос: {self.index_question}\n'
+                                       f'id чата:{self.id_user}\n'
+                                      )
 
 
 # Открываем или создаем словарь для хранения данных о сотрудниках
@@ -171,7 +173,7 @@ def notification_9_00(employees_dict, chat_id):
         bot.send_message(chat_id,
                          f'{mess[1][3]} <a href="tel:{hr_phone}">{hr_phone}</a>',
                          parse_mode='HTML',
-                         disable_notification=True, )
+                        )
         # sleep(7200)  # Действие в 12:00 первого дня
         sleep(12)
         bot.send_message(chat_id, '====12:00====')
@@ -328,7 +330,7 @@ def pressing_reaction(call):
     # 'yes_answer', 'no_answer' реакция на приглашение к опросу
     elif call.data == 'yes_answer':
         id_mess = bot.edit_message_text(mess[99][8], call.message.chat.id, call.message.id)
-        employee.survey_first_day(id_mess.id, QUEST_FIRST_LIST)
+        employee.survey_first_day(id_mess.id, employee.name_questionnaire)
 
     elif call.data == 'no_answer':
         element_develop(call.message.chat.id)
@@ -338,12 +340,12 @@ def pressing_reaction(call):
         #employee.check_score = 1
         employee.score_dey[employee.index_question] = 1
         employee.index_question += 1
-        employee.survey_first_day(call.message.id, QUEST_FIRST_LIST)
+        employee.survey_first_day(call.message.id, employee.name_questionnaire)
     elif call.data == 'No_Q':
         #employee.check_score = 0
         employee.score_dey[employee.index_question] = 0
         employee.index_question += 1
-        employee.survey_first_day(call.message.id, QUEST_FIRST_LIST)
+        employee.survey_first_day(call.message.id, employee.name_questionnaire)
 
 
 @bot.message_handler(content_types=['text'])
