@@ -45,8 +45,6 @@ class Employee:
         self.adaptation_completed = False  # параметр окончания адаптации
         self.index_question = 0  # Индекс вопросов в списке опросника
 
-
-
     def survey_first_day(self, id_mess, quest_list):
         """
         Функция опросника в первый рабочий день. Данные заносятся в self.score_dey
@@ -119,7 +117,7 @@ class Employee:
         bot.send_message(self.id_user, '====message test====')
         bot.send_message(self.id_user, f'вопрос: {self.index_question}\n'
                                        f'id чата:{self.id_user}\n'
-                                      )
+                         )
 
 
 # Открываем или создаем словарь для хранения данных о сотрудниках
@@ -163,7 +161,7 @@ def notification_9_00(employees_dict, chat_id):
 
     bot.send_message(chat_id, '====09:00====')
     # ====================================
-    bot.send_message(chat_id, f'{mess[1][1]} {employee.name}!', disable_notification=True)
+    bot.send_message(chat_id, f'{mess[1][1]} <b>{employee.name}!</b>', disable_notification=True)
     if employee.adaptation_dey == 1:
         bot.send_message(chat_id, mess[1][2], disable_notification=False)
         # sleep(3600)  # Действие в 10:00 первого дня
@@ -173,7 +171,7 @@ def notification_9_00(employees_dict, chat_id):
         bot.send_message(chat_id,
                          f'{mess[1][3]} <a href="tel:{hr_phone}">{hr_phone}</a>',
                          parse_mode='HTML',
-                        )
+                         )
         # sleep(7200)  # Действие в 12:00 первого дня
         sleep(12)
         bot.send_message(chat_id, '====12:00====')
@@ -187,7 +185,7 @@ def notification_9_00(employees_dict, chat_id):
                          mess[99][2],
                          disable_notification=True,
                          reply_markup=lib.simple_menu())
-# ++++++++++++++++++++++++++++++++++++++++++++
+        # ++++++++++++++++++++++++++++++++++++++++++++
         # bot.edit_message_text(mess[99][2],
         #                       chat_id,
         #                       inline_message_id=mess[99][9],
@@ -283,21 +281,47 @@ def start_dialog(message):
     # ======================================
 
 
+def message_cours(chat_id):
+    bot.send_message(chat_id=chat_id,
+                     text=f'<b>{employees[chat_id].name}</b> '
+                          f'{mess[employees[chat_id].adaptation_dey][employees[chat_id].current_course]}',
+                     parse_mode='html')
+    # bot.edit_message_text(chat_id=chat_id,
+    #                       message_id=message_id,
+    #                       text=f'<b>{employees[chat_id].name}</b> '
+    #                            f'{mess[employees[chat_id].adaptation_dey][employees[chat_id].current_course]}',
+    #                       parse_mode='html')
+    push_offer = bot.send_message(chat_id, mess[99][3],
+                                  reply_markup=lib.menu_ready(),
+                                  parse_mode='html')
+
+    global id_message
+    id_message = push_offer.id
+
+
 @bot.callback_query_handler(func=lambda call: True)
 def pressing_reaction(call):
     employee = employees[call.message.chat.id]  # Идентификация пользователя
 
     if call.data == 'yes':
-        if employee.current_course < 7:
-            employee.adaptation_dey = 3
 
-        bot.edit_message_text(chat_id=call.message.chat.id,
-                              message_id=call.message.id,
-                              text=f'<b>{employee.name}</b> {mess[employee.adaptation_dey][employee.current_course]}',
-                              parse_mode='html')
-        bot.send_message(call.message.chat.id, mess[99][3],
-                         reply_markup=lib.menu_ready(),
-                         parse_mode='html')
+        if employee.current_course > 6:
+            employee.adaptation_dey = 3
+        # bot.send_message(call.message.chat.id,
+        #                  f'Имя пользователя:<b>{employee.name}</b>\n'
+        #                  f'день адаптации:{employee.adaptation_dey}\n'
+        #                  f'номер задания:{employee.current_course}\n'
+        #                  f'название:{mess[employee.adaptation_dey][employee.current_course]}',
+        #                  parse_mode='html')
+        bot.delete_message(call.message.chat.id, call.message.id)
+        message_cours(call.message.chat.id)
+        # bot.edit_message_text(chat_id=call.message.chat.id,
+        #                       message_id=call.message.id,
+        #                       text=f'<b>{employee.name}</b> {mess[employee.adaptation_dey][employee.current_course]}',
+        #                       parse_mode='html')
+        # bot.send_message(call.message.chat.id, mess[99][3],
+        #                  reply_markup=lib.menu_ready(),
+        #                  parse_mode='html')
     # if call.data == 'yes':
     #     if employee.current_course > 3:
     #         employee.adaptation_dey = 2
@@ -348,12 +372,12 @@ def pressing_reaction(call):
         pass
     #  'Yes_Q', 'No_Q' реакция на опрос первого дня
     elif call.data == 'Yes_Q':
-        #employee.check_score = 1
+        # employee.check_score = 1
         employee.score_dey[employee.index_question] = 1
         employee.index_question += 1
         employee.survey_first_day(call.message.id, employee.name_questionnaire)
     elif call.data == 'No_Q':
-        #employee.check_score = 0
+        # employee.check_score = 0
         employee.score_dey[employee.index_question] = 0
         employee.index_question += 1
         employee.survey_first_day(call.message.id, employee.name_questionnaire)
@@ -372,17 +396,19 @@ def text_reaction(message):
     # ========== Переделать с учетом изменения в словаре сообщений
     elif message.text == 'Прошел✔️':  # Реакция на нажатие кнопки "Прошел"
 
-        employees[message.chat.id].courses_completed[employees[message.chat.id].current_course - 1] = 1
+        employees[message.chat.id].courses[employees[message.chat.id].current_course - 1] = 1
         employees[message.chat.id].current_course += 1
 
-        if not all(employees[message.chat.id].courses_completed):
+        if not all(employees[message.chat.id].courses):
             with open('./pic/dog_.OK.tgs', 'rb') as file:
                 dog_stiker = bot.send_sticker(message.chat.id, file, reply_markup=types.ReplyKeyboardRemove())
             sleep(3)
             bot.delete_message(message.chat.id, dog_stiker.id)
+            bot.delete_message(message.chat.id, id_message)
+            message_cours(message.chat.id)
 
-            bot.send_message(message.chat.id, mess[0][6],
-                             reply_markup=lib.simple_menu())
+            # bot.send_message(message.chat.id, mess[0][6],
+            #                  reply_markup=lib.simple_menu())
         else:
             with open('./pic/Hand_.well_done.tgs', 'rb') as file:
                 bot.send_sticker(message.chat.id, file, reply_markup=types.ReplyKeyboardRemove())
