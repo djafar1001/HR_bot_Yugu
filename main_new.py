@@ -40,6 +40,7 @@ class Employee:
         self.current_course = 1  # Номер текущего курса
         self.courses = [0] * 14  # Список курсов по порядку
         self.score_dey = [0] * 6  # Оценки первого дня поставленные пользователем
+        self.score_second_dey = [0] * 3  # Оценка второго дня
         self.name_questionnaire = QUEST_FIRST_LIST
         self.check_score = 0  # Значение оценки для опросника (1-да, 0-нет)
         self.adaptation_completed = False  # параметр окончания адаптации
@@ -62,13 +63,13 @@ class Employee:
                                   self.id_user,
                                   id_mess)
             self.index_question = 0
-            self.adaptation_dey = 2
+            self.adaptation_dey += 1
             # передаем управление ботом модулю schedule
             # schedule.every().day.until('09:00').do(notification_9_00, employees, message.chat.id)
             #
             # # временная замена schedule
             sleep(10)
-            bot.send_message(self.id_user, '======= Наступил 2 день адаптации======')
+            bot.send_message(self.id_user, f'======= Наступил {self.adaptation_dey} день адаптации======')
             notification_9_00(employees, self.id_user)
 
     # def questionnaire_first_day(self):
@@ -282,15 +283,17 @@ def start_dialog(message):
 
 
 def message_cours(chat_id):
+    if employees[chat_id].current_course > 6:
+        employees[chat_id].name_questionnaire = QUEST_SECOND_LIST
+        bot.send_message(chat_id,
+                         mess[99][10],
+                         reply_markup=lib.simple_menu('Yes_Q', 'No_Q'))
+        #employees[chat_id].adaptation_dey = 3
+
     bot.send_message(chat_id=chat_id,
                      text=f'<b>{employees[chat_id].name}</b> '
                           f'{mess[employees[chat_id].adaptation_dey][employees[chat_id].current_course]}',
                      parse_mode='html')
-    # bot.edit_message_text(chat_id=chat_id,
-    #                       message_id=message_id,
-    #                       text=f'<b>{employees[chat_id].name}</b> '
-    #                            f'{mess[employees[chat_id].adaptation_dey][employees[chat_id].current_course]}',
-    #                       parse_mode='html')
     push_offer = bot.send_message(chat_id, mess[99][3],
                                   reply_markup=lib.menu_ready(),
                                   parse_mode='html')
@@ -305,8 +308,6 @@ def pressing_reaction(call):
 
     if call.data == 'yes':
 
-        if employee.current_course > 6:
-            employee.adaptation_dey = 3
         # bot.send_message(call.message.chat.id,
         #                  f'Имя пользователя:<b>{employee.name}</b>\n'
         #                  f'день адаптации:{employee.adaptation_dey}\n'
@@ -373,12 +374,16 @@ def pressing_reaction(call):
     #  'Yes_Q', 'No_Q' реакция на опрос первого дня
     elif call.data == 'Yes_Q':
         # employee.check_score = 1
-        employee.score_dey[employee.index_question] = 1
+        if employee.adaptation_dey == QUEST_FIRST_LIST:
+            employee.score_dey[employee.index_question] = 1
+        elif employee.adaptation_dey == QUEST_SECOND_LIST:
+            employee.score_second_dey[employee.index_question] = int(call.message.text)
         employee.index_question += 1
         employee.survey_first_day(call.message.id, employee.name_questionnaire)
     elif call.data == 'No_Q':
         # employee.check_score = 0
-        employee.score_dey[employee.index_question] = 0
+        if employee.adaptation_dey == QUEST_FIRST_LIST:
+            employee.score_dey[employee.index_question] = 0
         employee.index_question += 1
         employee.survey_first_day(call.message.id, employee.name_questionnaire)
 
@@ -386,11 +391,8 @@ def pressing_reaction(call):
 @bot.message_handler(content_types=['text'])
 def text_reaction(message):
     if message.text.lower() == 'удалить' or message.text.lower() == 'elfkbnm':
-        path_file = './data/employees.db'
-        try:
-            remove(path_file)
-        except Exception:
-            bot.send_message(message.chat.id, f'Файл {path_file} не найден')
+        del_chat = employees.pop(message.chat.id,'Такого чата в базе нет')
+        bot.send_message(message.chat.id, del_chat, reply_markup=types.ReplyKeyboardRemove())
 
 
     # ========== Переделать с учетом изменения в словаре сообщений
