@@ -46,22 +46,30 @@ class Employee:
         self.adaptation_completed = False  # параметр окончания адаптации
         self.index_question = 0  # Индекс вопросов в списке опросника
 
-    def survey_first_day(self, id_mess, quest_list):
+    def survey_first_day(self, id_mess, type_quest=1):
         """
         Функция опросника в первый рабочий день. Данные заносятся в self.score_dey
         да - 1, нет - 0 вопросы берутся из словаря questions файла setings_HR_new
         :return:
         """
-        if self.index_question < len(quest_list):
-
-            bot.edit_message_text(quest_list[self.index_question],
-                                  self.id_user,
-                                  id_mess,
-                                  reply_markup=lib.simple_menu('Yes_Q', 'No_Q'))
+        if self.index_question < len(self.name_questionnaire):
+            if type_quest == 1:
+                bot.edit_message_text(self.name_questionnaire[self.index_question],
+                                      self.id_user,
+                                      id_mess,
+                                      reply_markup=lib.simple_menu('Yes_Q', 'No_Q'))
+            else:
+                bot.register_next_step_handler(self.name_questionnaire[self.index_question], self.saving_results)
+                pass
         else:
             bot.edit_message_text(mess[99][9],
                                   self.id_user,
                                   id_mess)
+            if self.adaptation_dey == 1:
+                bot.edit_message_text(mess[99][10],
+                                      self.id_user,
+                                      id_mess)
+
             self.index_question = 0
             self.adaptation_dey += 1
             # передаем управление ботом модулю schedule
@@ -72,33 +80,10 @@ class Employee:
             bot.send_message(self.id_user, f'======= Наступил {self.adaptation_dey} день адаптации======')
             notification_9_00(employees, self.id_user)
 
-    # def questionnaire_first_day(self):
-    #     """
-    #     Функция опросника в первый рабочий день. Данные заносятся в self.score_dey
-    #     да - 1, нет - 0 вопросы берутся из словаря questions файла setings_HR_new
-    #     :return:
-    #     """
-    #     bot.send_message(self.id_user, mess[99][8])
-    #
-    #     for i_index, i_quest in QUESTIONS.items():
-    #         question = bot.send_message(self.id_user,
-    #                                     i_quest,
-    #                                     reply_markup=lib.simple_menu('Yes_Q', 'No_Q'))
-    #         sleep(5)
-    #         # bot.send_message(id_chat, str(self.check_score))
-    #         self.score_dey[i_index - 1] = self.check_score
-    #         bot.delete_message(self.id_user, question.id)
-    #
-    #     bot.send_message(self.id_user, mess[99][9])
-    # self.adaptation_dey = 2
-    # # передаем управление ботом модулю shedule
-    # # schedule.every().day.until('09:00').do(notification_9_00, employees, message.chat.id)
-    #
-    # # временная замена schedule
-    # sleep(20)
-    # bot.send_message(message.chat.id, '======= Наступил 1 день адаптации======')
-    # notification_9_00(employees, message.chat.id)
-    # # ======================================
+    def saving_results(self, message):
+        self.score_second_dey[self.index_question] = message.text
+        self.index_question += 1
+        self.survey_first_day(message.id, type_quest=2)
 
     def begin_adapt(self):
         pass
@@ -162,7 +147,9 @@ def notification_9_00(employees_dict, chat_id):
 
     bot.send_message(chat_id, '====09:00====')
     # ====================================
-    bot.send_message(chat_id, f'{mess[1][1]} <b>{employee.name}!</b>', disable_notification=True)
+    bot.send_message(chat_id, f'{mess[1][1]} <b>{employee.name}!</b>',
+                     parse_mode='html',
+                     disable_notification=True)
     if employee.adaptation_dey == 1:
         bot.send_message(chat_id, mess[1][2], disable_notification=False)
         # sleep(3600)  # Действие в 10:00 первого дня
@@ -186,6 +173,13 @@ def notification_9_00(employees_dict, chat_id):
                          mess[99][2],
                          disable_notification=True,
                          reply_markup=lib.simple_menu())
+    # elif employee.adaptation_dey == 3:
+    else:
+        bot.send_message(chat_id,
+                         mess[99][4],
+                         disable_notification=True,
+                         reply_markup=lib.simple_menu())
+
         # ++++++++++++++++++++++++++++++++++++++++++++
         # bot.edit_message_text(mess[99][2],
         #                       chat_id,
@@ -283,17 +277,20 @@ def start_dialog(message):
 
 
 def message_cours(chat_id):
-    if employees[chat_id].current_course > 6:
+    if employees[chat_id].current_course == 6:
         employees[chat_id].name_questionnaire = QUEST_SECOND_LIST
         bot.send_message(chat_id,
-                         mess[99][10],
-                         reply_markup=lib.simple_menu('Yes_Q', 'No_Q'))
-        #employees[chat_id].adaptation_dey = 3
+                         mess[99][11],
+                         reply_markup=lib.simple_menu(call_yes='yes_answer', call_no='no_answer')
+                         )
+    if employees[chat_id].adaptation_dey > 3:  # временное решение для отладки
+        employees[chat_id].adaptation_dey = 3
 
     bot.send_message(chat_id=chat_id,
                      text=f'<b>{employees[chat_id].name}</b> '
                           f'{mess[employees[chat_id].adaptation_dey][employees[chat_id].current_course]}',
-                     parse_mode='html')
+                     parse_mode='html'
+                     )
     push_offer = bot.send_message(chat_id, mess[99][3],
                                   reply_markup=lib.menu_ready(),
                                   parse_mode='html')
@@ -365,33 +362,35 @@ def pressing_reaction(call):
                          reply_markup=lib.simple_menu('Yes_HR', 'No_HR'))
     # 'yes_answer', 'no_answer' реакция на приглашение к опросу
     elif call.data == 'yes_answer':
-        id_mess = bot.edit_message_text(mess[99][8], call.message.chat.id, call.message.id)
-        employee.survey_first_day(id_mess.id, employee.name_questionnaire)
-
+        if employee.name_questionnaire == QUEST_FIRST_LIST:
+            id_mess = bot.edit_message_text(mess[99][8], call.message.chat.id, call.message.id)
+            employee.survey_first_day(id_mess.id)
+        elif employee.name_questionnaire == QUEST_SECOND_LIST:
+            id_mess = bot.edit_message_text(mess[99][12], call.message.chat.id, call.message.id)
+            employee.survey_first_day(id_mess.id, type_quest=2)
+            pass
     elif call.data == 'no_answer':
         element_develop(call.message.chat.id)
         pass
     #  'Yes_Q', 'No_Q' реакция на опрос первого дня
     elif call.data == 'Yes_Q':
         # employee.check_score = 1
-        if employee.adaptation_dey == QUEST_FIRST_LIST:
-            employee.score_dey[employee.index_question] = 1
-        elif employee.adaptation_dey == QUEST_SECOND_LIST:
-            employee.score_second_dey[employee.index_question] = int(call.message.text)
+        employee.score_dey[employee.index_question] = 1
+
+        # employee.score_second_dey[employee.index_question] = int(call.message.text)
         employee.index_question += 1
-        employee.survey_first_day(call.message.id, employee.name_questionnaire)
+        employee.survey_first_day(call.message.id)
     elif call.data == 'No_Q':
         # employee.check_score = 0
-        if employee.adaptation_dey == QUEST_FIRST_LIST:
-            employee.score_dey[employee.index_question] = 0
+        employee.score_dey[employee.index_question] = 0
         employee.index_question += 1
-        employee.survey_first_day(call.message.id, employee.name_questionnaire)
+        employee.survey_first_day(call.message.id)
 
 
 @bot.message_handler(content_types=['text'])
 def text_reaction(message):
     if message.text.lower() == 'удалить' or message.text.lower() == 'elfkbnm':
-        del_chat = employees.pop(message.chat.id,'Такого чата в базе нет')
+        del_chat = employees.pop(message.chat.id, 'Такого чата в базе нет')
         bot.send_message(message.chat.id, del_chat, reply_markup=types.ReplyKeyboardRemove())
 
 
