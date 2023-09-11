@@ -38,10 +38,11 @@ class Employee:
         # self.training_start = lib.time_begin()  # Дата начала общения с чат-ботом
         self.adaptation_dey = 0  # Порядковый номер дня адаптации
         self.current_course = 1  # Номер текущего курса
-        self.courses = [0] * 14  # Список курсов по порядку
+        self.courses = [0] * 15  # Список курсов по порядку
         self.score_dey = [0] * 6  # Оценки первого дня поставленные пользователем
         self.score_second_dey = [0] * 3  # Оценка второго дня
         self.name_questionnaire = QUEST_FIRST_LIST
+        self.second_quest = False
         self.check_score = 0  # Значение оценки для опросника (1-да, 0-нет)
         self.adaptation_completed = False  # параметр окончания адаптации
         self.index_question = 0  # Индекс вопросов в списке опросника
@@ -59,17 +60,25 @@ class Employee:
                                       id_mess,
                                       reply_markup=lib.simple_menu('Yes_Q', 'No_Q'))
             else:
-                bot.register_next_step_handler(self.name_questionnaire[self.index_question], self.saving_results)
+                answer = bot.send_message(self.id_user, self.name_questionnaire[self.index_question])
+                bot.register_next_step_handler(answer, self.saving_results)
                 pass
         else:
-            bot.edit_message_text(mess[99][9],
-                                  self.id_user,
-                                  id_mess)
+            try:
+                bot.edit_message_text(mess[99][9],
+                                      self.id_user,
+                                      id_mess)
+            except Exception:
+                bot.send_message(self.id_user, mess[99][9])
+
             if self.adaptation_dey == 1:
+                sleep(3)
                 bot.edit_message_text(mess[99][10],
                                       self.id_user,
                                       id_mess)
-
+            if any(self.score_second_dey):
+                self.second_quest = True
+            lib.dump_employees(employees)  # сериализация изменений объекта пользователя в файл
             self.index_question = 0
             self.adaptation_dey += 1
             # передаем управление ботом модулю schedule
@@ -277,26 +286,27 @@ def start_dialog(message):
 
 
 def message_cours(chat_id):
-    if employees[chat_id].current_course == 6:
+    if employees[chat_id].current_course == 7 and not employees[chat_id].second_quest:
         employees[chat_id].name_questionnaire = QUEST_SECOND_LIST
         bot.send_message(chat_id,
                          mess[99][11],
                          reply_markup=lib.simple_menu(call_yes='yes_answer', call_no='no_answer')
                          )
-    if employees[chat_id].adaptation_dey > 3:  # временное решение для отладки
-        employees[chat_id].adaptation_dey = 3
+    else:
+        if employees[chat_id].adaptation_dey > 3:  # временное решение для отладки
+            employees[chat_id].adaptation_dey = 3
 
-    bot.send_message(chat_id=chat_id,
-                     text=f'<b>{employees[chat_id].name}</b> '
-                          f'{mess[employees[chat_id].adaptation_dey][employees[chat_id].current_course]}',
-                     parse_mode='html'
-                     )
-    push_offer = bot.send_message(chat_id, mess[99][3],
-                                  reply_markup=lib.menu_ready(),
-                                  parse_mode='html')
+        bot.send_message(chat_id=chat_id,
+                         text=f'<b>{employees[chat_id].name}</b> '
+                              f'{mess[employees[chat_id].adaptation_dey][employees[chat_id].current_course]}',
+                         parse_mode='html'
+                         )
+        push_offer = bot.send_message(chat_id, mess[99][3],
+                                      reply_markup=lib.menu_ready(),
+                                      parse_mode='html')
 
-    global id_message
-    id_message = push_offer.id
+        global id_message
+        id_message = push_offer.id
 
 
 @bot.callback_query_handler(func=lambda call: True)
@@ -403,6 +413,9 @@ def text_reaction(message):
         if not all(employees[message.chat.id].courses):
             with open('./pic/dog_.OK.tgs', 'rb') as file:
                 dog_stiker = bot.send_sticker(message.chat.id, file, reply_markup=types.ReplyKeyboardRemove())
+
+            lib.dump_employees(employees)  # сериализация изменений объекта пользователя в файл
+
             sleep(3)
             bot.delete_message(message.chat.id, dog_stiker.id)
             bot.delete_message(message.chat.id, id_message)
@@ -414,7 +427,8 @@ def text_reaction(message):
             with open('./pic/Hand_.well_done.tgs', 'rb') as file:
                 bot.send_sticker(message.chat.id, file, reply_markup=types.ReplyKeyboardRemove())
 
-            bot.send_message(message.chat.id, mess[0][8])
+            bot.send_message(message.chat.id, mess[99][5])
+            lib.dump_employees(employees)
     elif message.text.lower() == 'adm_sys':  # создает файл с информацией о пользователе
         lib.sys_info(employees)
         bot.send_message(message.chat.id, 'Файл создан')
