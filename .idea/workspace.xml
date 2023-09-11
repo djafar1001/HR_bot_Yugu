@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d45757aa-8889-4849-89a4-087695c0dd9b" name="Changes" comment="корректировка сообщений 2 дня изменение отклика на слово удалить, подготовка к созданию опросника">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="d45757aa-8889-4849-89a4-087695c0dd9b" name="Changes" comment="корректировка сообщений всего курса адаптациию Завершение опроса 2 дня. Корректировка перехода между опросом 2 дня">
       <change beforePath="$PROJECT_DIR$/Test.py" beforeDir="false" afterPath="$PROJECT_DIR$/Test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_new.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_new.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/setings_HR_new.py" beforeDir="false" afterPath="$PROJECT_DIR$/setings_HR_new.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -280,7 +277,14 @@
       <option name="project" value="LOCAL" />
       <updated>1693928986159</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="корректировка сообщений всего курса адаптациию Завершение опроса 2 дня. Корректировка перехода между опросом 2 дня">
+      <created>1694475304891</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1694475304891</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -308,7 +312,8 @@
     <MESSAGE value="Переработка 1 дня" />
     <MESSAGE value="мелкие изменения" />
     <MESSAGE value="Корректировка вывода сообщений первого дня" />
-    <option name="LAST_COMMIT_MESSAGE" value="Корректировка вывода сообщений первого дня" />
+    <MESSAGE value="корректировка сообщений всего курса адаптациию Завершение опроса 2 дня. Корректировка перехода между опросом 2 дня" />
+    <option name="LAST_COMMIT_MESSAGE" value="корректировка сообщений всего курса адаптациию Завершение опроса 2 дня. Корректировка перехода между опросом 2 дня" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
