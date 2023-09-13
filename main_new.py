@@ -51,7 +51,7 @@ class Employee:
         """
         Функция опросника в первый рабочий день. Данные заносятся в self.score_dey
         да - 1, нет - 0 вопросы берутся из словаря questions файла setings_HR_new
-        :return:
+        :return: None
         """
         if self.index_question < len(self.name_questionnaire):
             if type_quest == 1:
@@ -434,7 +434,7 @@ def text_reaction(message):
         bot.send_message(message.chat.id, 'Файл создан')
         pass
     else:
-        bot.send_message(message.chat.id, mess[0][10])  # сообщение бота на любой ввод не учтенный в коде
+        bot.send_message(message.chat.id, mess[99][7])  # сообщение бота на любой ввод не учтенный в коде
 
 
 if __name__ == '__main__':
