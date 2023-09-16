@@ -9,9 +9,10 @@ continue - продолжение работы с ботом
 help - информация о нахождении курсов
 
 """
+
 from setings_HR_new import HR_BOT_TOKEN as TOKEN, \
     BOT_MESSAGE as mess, \
-    HELP_MESSAGE, QUESTIONS, QUEST_FIRST_LIST, QUEST_SECOND_LIST
+    HELP_MESSAGE, QUESTIONS, QUEST_FIRST_LIST, QUEST_SECOND_LIST, ADM_MESS
 import HR_Lib as lib
 
 import telebot
@@ -46,6 +47,8 @@ class Employee:
         self.check_score = 0  # Значение оценки для опросника (1-да, 0-нет)
         self.adaptation_completed = False  # параметр окончания адаптации
         self.index_question = 0  # Индекс вопросов в списке опросника
+        self.lost_message = None
+        self.id_hi = 0  # индекс стикера приветствия
 
     def survey_first_day(self, id_mess, type_quest=1):
         """
@@ -87,6 +90,7 @@ class Employee:
             # # временная замена schedule
             sleep(10)
             bot.send_message(self.id_user, f'======= Наступил {self.adaptation_dey} день адаптации======')
+            bot.delete_message(self.id_user, self.id_hi)
             notification_9_00(employees, self.id_user)
 
     def saving_results(self, message):
@@ -159,6 +163,7 @@ def notification_9_00(employees_dict, chat_id):
     bot.send_message(chat_id, f'{mess[1][1]} <b>{employee.name}!</b>',
                      parse_mode='html',
                      disable_notification=True)
+    stiker_hi(chat_id)
     if employee.adaptation_dey == 1:
         bot.send_message(chat_id, mess[1][2], disable_notification=False)
         # sleep(3600)  # Действие в 10:00 первого дня
@@ -198,9 +203,18 @@ def notification_9_00(employees_dict, chat_id):
     #  lib.day_score(employee)  # Оценка дня
 
     pass
+def stiker_hi(chat_id):
+    """Функция выводит стикер приветствия"""
+    with open('./pic/AnimatedSticker_hi.tgs', 'rb') as file:
+        id_mess = bot.send_sticker(chat_id, file)
+    try:
+        employees[chat_id].id_hi = id_mess.id
+    except KeyError:
+        return id_mess.id
 
 
-@bot.message_handler(commands=['start', 'help', 'continue', 'edit'])
+
+@bot.message_handler(commands=['start', 'help', 'continue', 'edit', 'adm'])
 def handle_start(message):
     """
     После ввода команды /start Проверяем наличие пользователя в словаре сотрудников
@@ -213,8 +227,8 @@ def handle_start(message):
     if message.text == '/start':
         if message.chat.id not in employees.keys():
             bot.send_message(message.chat.id, mess[0][2])  # Приветствие
-            with open('./pic/AnimatedSticker_hi.tgs', 'rb') as file:
-                bot.send_sticker(message.chat.id, file)
+            global mess_hi
+            mess_hi = stiker_hi(message.chat.id)
             # Запрос имени сотрудника
             answer = bot.send_message(message.chat.id, mess[0][3])
             bot.register_next_step_handler(answer, start_dialog)
@@ -231,9 +245,9 @@ def handle_start(message):
             if employee.adaptation_completed:
                 bot.send_message(message.chat.id, mess[99][5])
             else:
-                bot.send_message(message.chat.id, 'Давайте продолжим', reply_markup=lib.simple_menu())
-
-
+                bot.send_message(message.chat.id,
+                                 mess[99][4],
+                                 reply_markup=lib.simple_menu())
 
     elif message.text == '/help':
         help_m = bot.send_message(message.chat.id, HELP_MESSAGE)
@@ -247,6 +261,11 @@ def handle_start(message):
         #     sleep(5)
         #     bot.delete_message(message.chat.id, ms_1.id)
         #     bot.delete_message(message.chat.id, ms_2.id)
+    elif message.text in ['/adm']:  # Административное меню
+        bot.send_message(message.chat.id,
+                         ADM_MESS,
+                         parse_mode='html')
+        pass
 
 
 def start_dialog(message):
@@ -261,6 +280,7 @@ def start_dialog(message):
     employee = Employee(message.text, message.chat.id)
     employees[message.chat.id] = employee
     lib.dump_employees(employees)  # Сохранение изменения словаря в файл
+    employee.id_hi = mess_hi
 
     bot.send_message(message.chat.id, f'Рад знакомству <b>{employee.name}</b>!\n{mess[0][1]}!', parse_mode='html')
     bot.send_message(message.chat.id, mess[0][4])
@@ -280,6 +300,8 @@ def start_dialog(message):
 
     # ======временная замена schedule
     sleep(10)
+
+    bot.delete_message(message.chat.id, employees[message.chat.id].id_hi)  # удаление стикера приветствия
     bot.edit_message_text('====Наступил 1 день адаптации====', message.chat.id, by_day.id)  # ************
     notification_9_00(employees, message.chat.id)
     # ======================================
@@ -341,10 +363,11 @@ def pressing_reaction(call):
     #                      reply_markup=lib.menu_ready(),
     #                      parse_mode='html')
     elif call.data == 'no':
-        time_out = bot.send_message(call.message.chat.id, mess[0][9])
-        bot.delete_message(call.message.chat.id, call.message.id)
+        time_out = bot.send_message(call.message.chat.id, mess[99][6])
+        sleep(5)
+        bot.delete_message(call.message.chat.id, time_out)
         sleep(10)
-        bot.delete_message(call.message.chat.id, time_out.id)
+        #bot.delete_message(call.message.chat.id, time_out.id)
         bot.send_message(call.message.chat.id,
                          mess[0][4],
                          reply_markup=lib.simple_menu())
@@ -424,15 +447,25 @@ def text_reaction(message):
             # bot.send_message(message.chat.id, mess[0][6],
             #                  reply_markup=lib.simple_menu())
         else:
+            # Окончание адаптации
             with open('./pic/Hand_.well_done.tgs', 'rb') as file:
-                bot.send_sticker(message.chat.id, file, reply_markup=types.ReplyKeyboardRemove())
+                bot.send_sticker(message.chat.id,
+                                 file,
+                                 reply_markup=types.ReplyKeyboardRemove())
 
             bot.send_message(message.chat.id, mess[99][5])
+            employees[message.chat.id].adaptation_completed = True
             lib.dump_employees(employees)
+
     elif message.text.lower() == 'adm_sys':  # создает файл с информацией о пользователе
         lib.sys_info(employees)
-        bot.send_message(message.chat.id, 'Файл создан')
-        pass
+        try:
+            with open(r'./employ_data.txt', 'rb') as file:
+                bot.send_document(message.chat.id,
+                                  file,
+                                  caption = 'Файл создан')
+        except FileNotFoundError:
+            bot.send_message(message.chat.id, 'Документ не найден')
     else:
         bot.send_message(message.chat.id, mess[99][7])  # сообщение бота на любой ввод не учтенный в коде
 
