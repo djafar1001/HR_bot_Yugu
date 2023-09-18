@@ -12,7 +12,7 @@ help - информация о нахождении курсов
 
 from setings_HR_new import HR_BOT_TOKEN as TOKEN, \
     BOT_MESSAGE as mess, \
-    HELP_MESSAGE, QUESTIONS, QUEST_FIRST_LIST, QUEST_SECOND_LIST, ADM_MESS
+    HELP_MESSAGE, QUEST_FIRST_LIST, QUEST_SECOND_LIST, ADM_MESS
 import HR_Lib as lib
 
 import telebot
@@ -203,6 +203,8 @@ def notification_9_00(employees_dict, chat_id):
     #  lib.day_score(employee)  # Оценка дня
 
     pass
+
+
 def stiker_hi(chat_id):
     """Функция выводит стикер приветствия"""
     with open('./pic/AnimatedSticker_hi.tgs', 'rb') as file:
@@ -211,7 +213,6 @@ def stiker_hi(chat_id):
         employees[chat_id].id_hi = id_mess.id
     except KeyError:
         return id_mess.id
-
 
 
 @bot.message_handler(commands=['start', 'help', 'continue', 'edit', 'adm'])
@@ -365,9 +366,9 @@ def pressing_reaction(call):
     elif call.data == 'no':
         time_out = bot.send_message(call.message.chat.id, mess[99][6])
         sleep(5)
-        bot.delete_message(call.message.chat.id, time_out)
+        bot.delete_message(call.message.chat.id, time_out.id)
         sleep(10)
-        #bot.delete_message(call.message.chat.id, time_out.id)
+        # bot.delete_message(call.message.chat.id, time_out.id)
         bot.send_message(call.message.chat.id,
                          mess[0][4],
                          reply_markup=lib.simple_menu())
@@ -463,7 +464,7 @@ def text_reaction(message):
             with open(r'./employ_data.txt', 'rb') as file:
                 bot.send_document(message.chat.id,
                                   file,
-                                  caption = 'Файл создан')
+                                  caption='Файл создан')
         except FileNotFoundError:
             bot.send_message(message.chat.id, 'Документ не найден')
     else:
