@@ -120,8 +120,8 @@ class Employee:
 
 
 # Открываем или создаем словарь для хранения данных о сотрудниках
-if path.exists('./data/employees.db'):
-    with open('./data/employees.db', 'rb') as file:
+if path.exists('Employee/employees.db'):
+    with open('Employee/employees.db', 'rb') as file:
         employees = pickle.load(file)
 else:
     employees = {}
@@ -353,7 +353,7 @@ def pressing_reaction(call):
         # bot.send_message(call.message.chat.id, mess[99][3],
         #                  reply_markup=lib.menu_ready(),
         #                  parse_mode='html')
-    # if call.data == 'yes':
+    # if call.Employee == 'yes':
     #     if employee.current_course > 3:
     #         employee.adaptation_dey = 2
     #     bot.edit_message_text(chat_id=call.message.chat.id,
@@ -429,7 +429,8 @@ def text_reaction(message):
 
 
     # ========== Переделать с учетом изменения в словаре сообщений
-    elif message.text == 'Прошел✔️':  # Реакция на нажатие кнопки "Прошел"
+    elif message.text[:6] == 'Прошел':  # Реакция на нажатие кнопки "Прошел"
+#    elif message.text == 'Прошел✔️':  # Реакция на нажатие кнопки "Прошел"
 
         employees[message.chat.id].courses[employees[message.chat.id].current_course - 1] = 1
         employees[message.chat.id].current_course += 1
