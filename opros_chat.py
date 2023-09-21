@@ -1,8 +1,10 @@
+from setings_test import TOKEN_T_BOT as TOKEN
+import HR_Lib as lib
 import telebot
 import datetime
 import pickle
-
-bot = telebot.TeleBot("YOUR_BOT_TOKEN")
+from time import time
+bot = telebot.TeleBot(TOKEN.get('token'))  # привязка бота к коду
 
 # Класс пользователя
 class User:
@@ -93,4 +95,9 @@ def handle_text_message(message):
 # Инициализация и запуск бота
 if __name__ == "__main__":
     initialize_users()  # Инициализация пользователей
-    bot.polling(none_stop=True)
+    print('Мой HR-бот')
+    print(lib.format_time(time()))
+    # Запуск бота в работу на ожидание сообщений в бесконечном режиме без интервалов
+    print('Started')
+    bot.polling(none_stop=True, interval=0)
+    print('Stoped')
