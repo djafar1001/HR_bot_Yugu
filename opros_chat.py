@@ -55,7 +55,8 @@ questions = {
 # Отправка опросов
 def send_daily_survey():
     today = datetime.date.today()
-    day_number = today.day
+    #day_number = today.day
+    day_number = 1
 
     if day_number in questions:
         question_list = questions[day_number]
@@ -73,6 +74,7 @@ def initialize_users():
 def handle_start(message):
     user_id = message.from_user.id
     if user_id not in users:
+        bot.send_message(message.chat.id, f'{user_id},команда принята')
         users[user_id] = User(user_id)
         save_survey_results()  # Сохранение данных о новом пользователе
     send_daily_survey()  # Отправка опроса при старте бота

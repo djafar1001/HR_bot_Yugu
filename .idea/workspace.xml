@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d45757aa-8889-4849-89a4-087695c0dd9b" name="Changes" comment="Подготовка кода для формирования опросов в чате">
+      <change afterPath="$PROJECT_DIR$/opros_chat_02.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Test.py" beforeDir="false" afterPath="$PROJECT_DIR$/Test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/opros_chat.py" beforeDir="false" afterPath="$PROJECT_DIR$/opros_chat.py" afterDir="false" />
@@ -321,7 +322,14 @@
       <option name="project" value="LOCAL" />
       <updated>1695228107348</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Подготовка кода для формирования опросов в чате">
+      <created>1695309186546</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1695309186567</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -354,5 +362,21 @@
     <MESSAGE value="добавление словаря пользователей" />
     <MESSAGE value="Подготовка кода для формирования опросов в чате" />
     <option name="LAST_COMMIT_MESSAGE" value="Подготовка кода для формирования опросов в чате" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/opros_chat.py</url>
+          <line>84</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/opros_chat.py</url>
+          <line>6</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
