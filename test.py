@@ -1,57 +1,33 @@
+from setings_HR import HR_BOT_TOKEN as TOKEN, BOT_MESSAGE as mess, HELP_MESS
+#import HR_Lib as lib
+
 import telebot
-from telebot import types
+#from telebot import types
+from time import time, sleep
+bot = telebot.TeleBot(TOKEN['token'])  # привязка бота к коду
 
-bot = telebot.TeleBot("YOUR_BOT_TOKEN")
+# Отправка push-уведомления пользователю
+def send_notification(chat_id, message):
+    # Используйте метод sendMessage с параметром disable_notification=True
+    sleep(10)
+    bot.send_message(chat_id, message, disable_notification=True)
 
-# Глобальный словарь для хранения текущего вопроса для каждого пользователя
-current_question = {}
-
-# Вопросы для опроса
-questions = [
-    "Вопрос 1: Рабочее место было организовано?",
-    "Вопрос 2: Почта подключена?",
-    "Вопрос 3: Удалось познакомиться с твоей командой?",
-    "Вопрос 4: Ты передал все документы для оформления в hr-службу?",
-    "Вопрос 5: Понятно ли, где можно пообедать?",
-    "Вопрос 6: Ты ознакомился с рабочим графиком?"
-]
-
-@bot.message_handler(commands=['start'])
-def start(message):
-    user_id = message.chat.id
-    current_question[user_id] = 0  # Инициализация текущего вопроса
-    send_current_question(user_id)
-
-def send_current_question(user_id):
-    if user_id in current_question:
-        question_index = current_question[user_id]
-        if question_index < len(questions):
-            question_text = questions[question_index]
-            markup = create_inline_keyboard()
-            bot.send_message(user_id, question_text, reply_markup=markup)
-        else:
-            bot.send_message(user_id, "Опрос завершен.")
+# Команда для отправки уведомления
+@bot.message_handler(commands=['send_notification'])
+def send_custom_notification(message):
+    # Проверка, что уведомления включены для пользователя
+    if is_notifications_enabled(message.chat.id):
+        # Отправка push-уведомления пользователю
+        send_notification(message.chat.id, 'Пора выполнить работу с ботом!')
     else:
-        bot.send_message(user_id, "Опрос не найден. Начните с команды /start.")
+        bot.send_message(message.chat.id, 'Не удалось направить уведомления')
 
-def create_inline_keyboard():
-    markup = types.InlineKeyboardMarkup()
-    yes_button = types.InlineKeyboardButton("Да", callback_data="yes")
-    no_button = types.InlineKeyboardButton("Нет", callback_data="no")
-    markup.add(yes_button, no_button)
-    return markup
+# Проверка, включены ли уведомления для пользователя
+def is_notifications_enabled(chat_id):
+    # Здесь вы можете использовать базу данных или другой механизм для хранения состояния пользователя
+    # и проверить, установлен ли флаг "Уведомления включено" для данного chat_id
+    # Верните True, если уведомления включены, и False в противном случае
+    return True
 
-@bot.callback_query_handler(func=lambda call: call.data in ["yes", "no"])
-def callback_handler(call):
-    user_id = call.message.chat.id
-    if user_id in current_question:
-        question_index = current_question[user_id]
-        if question_index < len(questions):
-            current_question[user_id] += 1  # Переходим к следующему вопросу
-            send_current_question(user_id)
-            # Удаление сообщения с предыдущим вопросом и InlineKeyboard
-            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text="Ваш ответ: " + call.data)
-    else:
-        bot.send_message(user_id, "Опрос не найден. Начните с команды /start.")
-
+# Запуск бота
 bot.polling()
