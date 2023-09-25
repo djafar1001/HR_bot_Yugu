@@ -14,7 +14,7 @@ from setings_HR_new import HR_BOT_TOKEN as TOKEN, \
     BOT_MESSAGE as mess, \
     HELP_MESSAGE, QUEST_FIRST_LIST, QUEST_SECOND_LIST, ADM_MESS
 import HR_Lib as lib
-
+from HR_Lib.class_user import Employee
 import telebot
 from telebot import types
 from os import path, remove
