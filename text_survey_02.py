@@ -8,6 +8,9 @@ from time import time
 
 bot = telebot.TeleBot(TOKEN.get('token'))  # привязка бота к коду
 
+global user
+
+
 class Employee:
     """Класс, представляющий параметры и функции сотрудника"""
 
@@ -32,9 +35,7 @@ class Employee:
         self.survey_days = [3, 4, 5]
 
 
-
 quest_rez = {}
-
 
 questions_dict = {
     3: [
@@ -56,37 +57,47 @@ questions_dict = {
     ]
 }
 
+
 def send_next_question():
+    """
+    Функция направляет очередной вопрос из списка по ключу равному номеру дня адаптации
+    """
     if user.index_question < len(questions_dict[user.adaptation_dey]):
-        query = bot.send_message(user.id_user,
-                                 questions_dict[user.adaptation_dey][user.index_question])
+        query = bot.send_message(user.id_user, f'Вопрос {user.index_question + 1}\n'
+                                               f'{questions_dict[user.adaptation_dey][user.index_question]}')
         bot.register_next_step_handler(query, save_query)
     else:
         bot.send_message(user.id_user, 'Спасибо за пройденный опрос')
         user.index_question = 0
-# ===========================
+        # ===========================
         if user.survey_days:
             continue_quest()
         else:
             bot.send_message(user.id_user, f'quest_rez={quest_rez}')
             bot.send_message(user.id_user, 'Тестирование закончено')
+
+
 def continue_quest():
+    """ВРЕМЕННАЯ Функция изменение номера дня адаптации"""
     user.adaptation_dey = user.survey_days.pop(0)
     quest_rez[user.adaptation_dey] = []
     bot.send_message(user.id_user, f'День {user.adaptation_dey}, осталось {user.survey_days}')
     send_next_question()
+
+
 # ===========================
 def save_query(message):
+    """
+    Функция сохраняет ответ пользователя в список ответов,
+    привязанный к ключу дня адаптации, в соответствии с индексом вопросов
+    И выполняет запуск функции вывода очередного вопроса
+    """
     quest_rez[user.adaptation_dey].append(message.text)
     user.index_question += 1
     send_next_question()
 
 
-def choice_day():
-    """ДЛЯ ТЕСТА Функция запрашивает номер дня"""
-    day_testing = bot.send_message(user.id_user, 'Введите номер дня')
-    return  int(day_testing.text)
-
+# ==================================================
 def simple_menu(call_yes='yes', call_no='no'):
     """
     Функция определения Inline-меню с двумя кнопками "Да" и "Нет"
@@ -100,23 +111,27 @@ def simple_menu(call_yes='yes', call_no='no'):
     return markup
 
 
+# ===================================================
+
 
 @bot.message_handler(commands=['start'])
 def handle_start(message):
-    """Функция обработки  команды start"""
+    """Функция обработки команды start"""
     # Создание экземпляра пользователя
     global user
     user = Employee('Alex', message.chat.id)
-    #user.adaptation_dey = choice_day()
+    # user.adaptation_dey = choice_day()
     user.adaptation_dey = user.survey_days.pop(0)
     bot.send_message(user.id_user, f'День {user.adaptation_dey}, осталось {user.survey_days}')
     bot.send_message(user.id_user, 'Вы готовы пройти опрос?', reply_markup=simple_menu('yes', 'no'))
     pass
 
+
 @bot.message_handler(commands=['changeday'])
 def change_day_command(message):
-    """Функция обработки  команды changeday"""
+    """Функция обработки команды changeday"""
     pass
+
 
 # @bot.message_handler(content_types=['text'])
 # def text_reaction(message):
@@ -130,8 +145,7 @@ def pressing_reaction(call):
         quest_rez[user.adaptation_dey] = []
         send_next_question()
     elif call.data == 'no':
-        pass
-
+        bot.send_message(user.id_user, 'Жаль, нам очень важно Ваше мнение')
 
 
 # Инициализация и запуск бота
@@ -141,4 +155,4 @@ if __name__ == "__main__":
     # Запуск бота в работу на ожидание сообщений в бесконечном режиме без интервалов
     print('Started')
     bot.polling(none_stop=True, interval=0)
-    print('Stoped')
+    print('Stopped')
