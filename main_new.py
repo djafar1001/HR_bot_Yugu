@@ -13,8 +13,9 @@ help - информация о нахождении курсов
 from setings_HR_new import HR_BOT_TOKEN as TOKEN, \
     BOT_MESSAGE as mess, \
     HELP_MESSAGE, QUEST_FIRST_LIST, QUEST_SECOND_LIST, ADM_MESS
+#from HR_Lib import Employee
 import HR_Lib as lib
-from HR_Lib.class_user import Employee
+
 import telebot
 from telebot import types
 from os import path, remove
@@ -278,6 +279,7 @@ def start_dialog(message):
     :param message:
     :return:
     """
+    # co-worker
     employee = Employee(message.text, message.chat.id)
     employees[message.chat.id] = employee
     lib.dump_employees(employees)  # Сохранение изменения словаря в файл
