@@ -537,10 +537,13 @@ def text_reaction(message):
 
 
 if __name__ == '__main__':
-    print('Мой HR-бот')
-    print(lib.format_time(time()))
-    # Запуск бота в работу на ожидание сообщений в бесконечном режиме без интервалов
-    print('Started')
-    bot.polling(none_stop=True, interval=0)
-
+    while True: # Цикл для постоянного перезапуска бота
+        try:
+            print('Мой HR-бот')
+            print(lib.format_time(time()))
+            # Запуск бота в работу на ожидание сообщений в бесконечном режиме без интервалов
+            print('Started')
+            bot.polling(none_stop=True, interval=0)
+        except:
+            continue
     print('Stoped')
