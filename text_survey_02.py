@@ -5,6 +5,9 @@ from telebot import types
 # import datetime
 # import pickle
 from time import time
+#Подключение библиотеки для логирования
+from loguru import logger
+
 
 bot = telebot.TeleBot(TOKEN.get('token'))  # привязка бота к коду
 
@@ -37,6 +40,12 @@ class Employee:
 
 quest_rez = {}  # Словарь ответов на вопросы в соответствии с номером дня
 
+
+logger.add('./log/log_bot.log',
+           format='{time}| {Level} {message} {quest_rez} {employee.name}',
+           level='DEBUG')
+
+
 questions_dict = {
     3: [
         "Сообщи о возможных идеях улучшения качества работы чат бота?",
@@ -57,7 +66,7 @@ questions_dict = {
     ]
 }
 
-
+@logger.catch(level='DEBUG')
 def send_next_question():
     """
     Функция направляет очередной вопрос из списка по ключу равному номеру дня адаптации

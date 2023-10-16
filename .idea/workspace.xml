@@ -4,9 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d45757aa-8889-4849-89a4-087695c0dd9b" name="Changes" comment="корректировка опросников">
+    <list default="true" id="d45757aa-8889-4849-89a4-087695c0dd9b" name="Changes" comment="корректировка запуска бота">
+      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_new.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_new.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HR_Lib/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/HR_Lib/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/text_survey_02.py" beforeDir="false" afterPath="$PROJECT_DIR$/text_survey_02.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,7 +42,7 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Python/HR_bot_Yugu&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/python/HR_bot_publication&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
 }</component>
@@ -48,7 +51,7 @@
       <recent name="C:\python\HR_bot_Yugu\pic" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main_new">
+  <component name="RunManager" selected="Python.text_survey_02">
     <configuration name="main_new" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="HR_bot_Yugu" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -156,8 +159,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.main_new" />
         <item itemvalue="Python.text_survey_02" />
+        <item itemvalue="Python.main_new" />
         <item itemvalue="Python.opros_chat_02" />
         <item itemvalue="Python.opros_chat" />
         <item itemvalue="Python.opros_10" />
@@ -348,7 +351,14 @@
       <option name="project" value="LOCAL" />
       <updated>1695832334691</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="корректировка запуска бота">
+      <created>1695913489300</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1695913489300</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -382,7 +392,8 @@
     <MESSAGE value="Подготовка кода для формирования опросов в чате" />
     <MESSAGE value="Подготовка кода для создания опросников" />
     <MESSAGE value="корректировка опросников" />
-    <option name="LAST_COMMIT_MESSAGE" value="корректировка опросников" />
+    <MESSAGE value="корректировка запуска бота" />
+    <option name="LAST_COMMIT_MESSAGE" value="корректировка запуска бота" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
