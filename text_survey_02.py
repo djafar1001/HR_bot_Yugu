@@ -6,7 +6,8 @@ from telebot import types
 # import pickle
 from time import time
 #Подключение библиотеки для логирования
-from loguru import logger
+#from loguru import logger
+import logging
 
 
 bot = telebot.TeleBot(TOKEN.get('token'))  # привязка бота к коду
@@ -40,10 +41,10 @@ class Employee:
 
 quest_rez = {}  # Словарь ответов на вопросы в соответствии с номером дня
 
-
-logger.add('./log/log_bot.log',
-           format='{time}| {Level} {message} {quest_rez} {employee.name}',
-           level='DEBUG')
+logger = logging.getLogger(__name__)
+# logger.add('./log/log_bot.log',
+#            format='{time}| {Level} {message} {quest_rez} {employee.name}',
+#            level='DEBUG')
 
 
 questions_dict = {
@@ -66,7 +67,7 @@ questions_dict = {
     ]
 }
 
-@logger.catch(level='DEBUG')
+#@logger.catch
 def send_next_question():
     """
     Функция направляет очередной вопрос из списка по ключу равному номеру дня адаптации
@@ -74,6 +75,12 @@ def send_next_question():
     if employee.index_question < len(questions_dict[employee.adaptation_dey]):
         query = bot.send_message(employee.id_user, f'Вопрос {employee.index_question + 1}\n'
                                                    f'{questions_dict[employee.adaptation_dey][employee.index_question]}')
+        #===========Loger от Logging===========
+        logger.setLevel(logging.DEBUG)
+        logger.debug(f'День адаптации: {employee.adaptation_dey} '
+                     f'Вопрос: № {employee.index_question} "{query.text}"'
+                     f'Отвечает {employee.name} {query.from_user.first_name} ')
+
         bot.register_next_step_handler(query, save_query)
     else:
         bot.send_message(employee.id_user, 'Спасибо за пройденный опрос')
