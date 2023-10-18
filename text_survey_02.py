@@ -6,8 +6,8 @@ from telebot import types
 # import pickle
 from time import time
 #Подключение библиотеки для логирования
-#from loguru import logger
-import logging
+from loguru import logger
+#import logging
 
 
 bot = telebot.TeleBot(TOKEN.get('token'))  # привязка бота к коду
@@ -41,10 +41,11 @@ class Employee:
 
 quest_rez = {}  # Словарь ответов на вопросы в соответствии с номером дня
 
-logger = logging.getLogger(__name__)
-# logger.add('./log/log_bot.log',
-#            format='{time}| {Level} {message} {quest_rez} {employee.name}',
-#            level='DEBUG')
+#logger = logging.getLogger(__name__)
+logger.add('./log/test_log.log',
+           level='DEBUG',
+           rotation='100 kb',
+           colorize=True)
 
 
 questions_dict = {
@@ -75,12 +76,13 @@ def send_next_question():
     if employee.index_question < len(questions_dict[employee.adaptation_dey]):
         query = bot.send_message(employee.id_user, f'Вопрос {employee.index_question + 1}\n'
                                                    f'{questions_dict[employee.adaptation_dey][employee.index_question]}')
-        #===========Loger от Logging===========
-        logger.setLevel(logging.DEBUG)
-        logger.debug(f'День адаптации: {employee.adaptation_dey} '
-                     f'Вопрос: № {employee.index_question} "{query.text}"'
-                     f'Отвечает {employee.name} {query.from_user.first_name} ')
-
+        # #===========Loger от Logging===========
+        # logger.setLevel(logging.DEBUG)
+        # logger.debug(f'День адаптации: {employee.adaptation_dey} '
+        #              f'Вопрос: № {employee.index_question} "{query.text}"'
+        #              f'Отвечает {employee.name} {query.from_user.first_name} ')
+        logger.debug(f'День адаптации {employee.adaptation_dey}\n'
+                     f'{" " * 69} вопрос: {query.text}')
         bot.register_next_step_handler(query, save_query)
     else:
         bot.send_message(employee.id_user, 'Спасибо за пройденный опрос')
@@ -108,6 +110,10 @@ def save_query(message):
     привязанный к ключу дня адаптации, в соответствии с индексом вопросов
     И выполняет запуск функции вывода очередного вопроса
     """
+    logger.debug(
+                 f'Пользователь {message.from_user.username} с ID {message.from_user.id}\n'
+                 f'{" " * 69} Получен ответ {message.text}'
+    )
     quest_rez[employee.adaptation_dey].append(message.text)
     employee.index_question += 1
     send_next_question()

@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d45757aa-8889-4849-89a4-087695c0dd9b" name="Changes" comment="Проба настройки логирования">
-      <change afterPath="$PROJECT_DIR$/test_loguru.py" afterDir="false" />
+    <list default="true" id="d45757aa-8889-4849-89a4-087695c0dd9b" name="Changes" comment="Проба настройки логирования loguru">
+      <change afterPath="$PROJECT_DIR$/test_logging.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_loguru.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_loguru.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/text_survey_02.py" beforeDir="false" afterPath="$PROJECT_DIR$/text_survey_02.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -49,7 +50,7 @@
       <recent name="C:\python\HR_bot_Yugu\pic" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.test_loguru">
+  <component name="RunManager" selected="Python.text_survey_02">
     <configuration name="main_new" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="HR_bot_Yugu" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -157,8 +158,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.test_loguru" />
         <item itemvalue="Python.text_survey_02" />
+        <item itemvalue="Python.test_loguru" />
         <item itemvalue="Python.main_new" />
         <item itemvalue="Python.opros_chat_02" />
         <item itemvalue="Python.opros_chat" />
@@ -363,7 +364,14 @@
       <option name="project" value="LOCAL" />
       <updated>1697468714848</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="Проба настройки логирования loguru">
+      <created>1697555286880</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1697555286881</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -399,7 +407,8 @@
     <MESSAGE value="корректировка опросников" />
     <MESSAGE value="корректировка запуска бота" />
     <MESSAGE value="Проба настройки логирования" />
-    <option name="LAST_COMMIT_MESSAGE" value="Проба настройки логирования" />
+    <MESSAGE value="Проба настройки логирования loguru" />
+    <option name="LAST_COMMIT_MESSAGE" value="Проба настройки логирования loguru" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

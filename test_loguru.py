@@ -28,6 +28,5 @@ def output_error(number=None):
 
 
 #testing_log(a, b, c)
-if output_error():
-    logger.info(f'Результат: {output_error()}')
+logger.info(f'Результат: {output_error()}')
 
