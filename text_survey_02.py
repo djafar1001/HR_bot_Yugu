@@ -8,8 +8,8 @@ from time import time
 #Подключение библиотеки для логирования
 from loguru import logger
 #import logging
-
-
+from colorama import init
+init()
 bot = telebot.TeleBot(TOKEN.get('token'))  # привязка бота к коду
 
 global employee
@@ -44,8 +44,9 @@ quest_rez = {}  # Словарь ответов на вопросы в соот�
 #logger = logging.getLogger(__name__)
 logger.add('./log/test_log.log',
            level='DEBUG',
-           rotation='100 kb',
-           colorize=True)
+           rotation='100 kb')
+#logger.add('./log/test_log.log', level='DEBUG')
+
 
 
 questions_dict = {
@@ -81,7 +82,7 @@ def send_next_question():
         # logger.debug(f'День адаптации: {employee.adaptation_dey} '
         #              f'Вопрос: № {employee.index_question} "{query.text}"'
         #              f'Отвечает {employee.name} {query.from_user.first_name} ')
-        logger.debug(f'День адаптации {employee.adaptation_dey}\n'
+        logger.info(f'День адаптации {employee.adaptation_dey}\n'
                      f'{" " * 69} вопрос: {query.text}')
         bot.register_next_step_handler(query, save_query)
     else:

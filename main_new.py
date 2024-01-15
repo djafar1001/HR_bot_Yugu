@@ -13,8 +13,11 @@ help - информация о нахождении курсов
 from setings_HR_new import HR_BOT_TOKEN as TOKEN, \
     BOT_MESSAGE as mess, \
     HELP_MESSAGE, QUEST_FIRST_LIST, QUEST_SECOND_LIST, ADM_MESS, TEXT_QUESTIONNAIRES
-#from HR_Lib import Employee
+from HR_Lib.class_user import Employee
 import HR_Lib as lib
+# import HR_Lib.keyboard
+# import HR_Lib
+
 
 import telebot
 from telebot import types
@@ -65,7 +68,7 @@ class Employee:
                 bot.edit_message_text(self.name_questionnaire[self.index_question],
                                       self.id_user,
                                       id_mess,
-                                      reply_markup=lib.simple_menu('Yes_Q', 'No_Q'))
+                                      reply_markup=lib.keyboard.simple_menu('Yes_Q', 'No_Q'))
             else:
                 answer = bot.send_message(self.id_user, self.name_questionnaire[self.index_question])
                 bot.register_next_step_handler(answer, self.saving_results)
@@ -184,13 +187,13 @@ def notification_9_00(employees_dict, chat_id):
 
         bot.send_message(chat_id,
                          f'{employee.name}, {mess[1][4]}',
-                         reply_markup=lib.simple_menu('Yes_HR', 'No_HR'),
+                         reply_markup=lib.keyboard.simple_menu('Yes_HR', 'No_HR'),
                          disable_notification=True)
     elif employee.adaptation_dey == 2:
         bot.send_message(chat_id,
                          mess[99][2],
                          disable_notification=True,
-                         reply_markup=lib.simple_menu())
+                         reply_markup=lib.keyboard.simple_menu())
     # elif employee.adaptation_dey == 3:
     #     bot.send_message(chat_id,
     #                      mess[99][4],
@@ -201,7 +204,7 @@ def notification_9_00(employees_dict, chat_id):
         bot.send_message(chat_id,
                          mess[99][4],
                          disable_notification=True,
-                         reply_markup=lib.simple_menu())
+                         reply_markup=lib.keyboard.simple_menu())
 
 def stiker_hi(chat_id):
     """Функция выводит стикер приветствия"""
@@ -283,7 +286,7 @@ def handle_start(message):
             else:
                 bot.send_message(message.chat.id,
                                  mess[99][4],
-                                 reply_markup=lib.simple_menu())
+                                 reply_markup=lib.keyboard.simple_menu())
 
     elif message.text == '/help':
         help_m = bot.send_message(message.chat.id, HELP_MESSAGE)
@@ -351,7 +354,7 @@ def message_cours(chat_id):
         employees[chat_id].name_questionnaire = QUEST_SECOND_LIST
         bot.send_message(chat_id,
                          f'<b>{employees[chat_id].name}</b> {mess[99][11]}',
-                         reply_markup=lib.simple_menu(call_yes='yes_answer', call_no='no_answer'),
+                         reply_markup=lib.keyboard.simple_menu(call_yes='yes_answer', call_no='no_answer'),
                          parse_mode='html'
                          )
     elif employees[chat_id].adaptation_dey in employees[chat_id].survey_days \
@@ -365,7 +368,7 @@ def message_cours(chat_id):
             mess_survey = f'<b>{employees[chat_id].name}</b> {mess[99][14]}'
         bot.send_message(chat_id,
                          mess_survey,
-                         reply_markup=lib.simple_menu(call_yes='yes_answer', call_no='no_answer'),
+                         reply_markup=lib.keyboard.simple_menu(call_yes='yes_answer', call_no='no_answer'),
                          parse_mode='html'
                          )
         pass
@@ -428,7 +431,7 @@ def pressing_reaction(call):
         # bot.delete_message(call.message.chat.id, time_out.id)
         bot.send_message(call.message.chat.id,
                          mess[0][4],
-                         reply_markup=lib.simple_menu())
+                         reply_markup=lib.keyboard.simple_menu())
     # 'Yes_HR','No_HR' реакция о вопросе про документы
     elif call.data == 'Yes_HR':
         chif = bot.edit_message_text(mess[1][5], call.message.chat.id, call.message.id)
@@ -440,7 +443,7 @@ def pressing_reaction(call):
 
         bot.send_message(call.message.chat.id,
                          mess[1][6],
-                         reply_markup=lib.simple_menu(call_yes='yes_answer', call_no='no_answer'),
+                         reply_markup=lib.keyboard.simple_menu(call_yes='yes_answer', call_no='no_answer'),
                          disable_notification=True)
     elif call.data == 'No_HR':
         time_out = bot.send_message(call.message.chat.id, mess[99][6])
@@ -450,7 +453,7 @@ def pressing_reaction(call):
         sleep(5)
         bot.send_message(call.message.chat.id,
                          f'{employee.name}, {mess[1][4]}',
-                         reply_markup=lib.simple_menu('Yes_HR', 'No_HR'))
+                         reply_markup=lib.keyboard.simple_menu('Yes_HR', 'No_HR'))
     # 'yes_answer', 'no_answer' реакция на приглашение к опросу
     elif call.data == 'yes_answer':
         if employee.name_questionnaire == QUEST_FIRST_LIST:
@@ -543,7 +546,7 @@ if __name__ == '__main__':
             print(lib.format_time(time()))
             # Запуск бота в работу на ожидание сообщений в бесконечном режиме без интервалов
             print('Started')
-            bot.polling(none_stop=True, interval=0)
+            bot.polling(none_stop=True, interval=0, skip_pending=True)
         except:
             continue
     print('Stoped')

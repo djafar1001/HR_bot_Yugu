@@ -21,6 +21,11 @@ SEARCH_TOKEN = {'name': '@Search_NZO_bot',
                'URL': 'https://t.me/Search_NZO_bot',
                'token': '5427035201:AAFRBbiH8VCizg0F_iPPqNA7HH9TodYEzes'}
 
+TESTING_BOT = {'name': '@DjafarTestingBot',
+               'URL': 'https://t.me/DjafarTestingBot',
+               'token': '6647440372:AAHjKXyVtSOLh_IonzsuexW_RcA0Y8sXiIo'}
+
+
 START_MESSAGE = f'Пока работает со\n' \
                 f'СЛОВА:\n' \
                 f'"mess" - все данные по сообщению\n' \

@@ -1,4 +1,8 @@
-from . import _
+from setings_HR_new import QUEST_FIRST_LIST, \
+                            BOT_MESSAGE as mess
+from time import time, sleep
+import HR_Lib as lib
+
 class Employee:
     """Класс, представляющий параметры и функции сотрудника"""
 
