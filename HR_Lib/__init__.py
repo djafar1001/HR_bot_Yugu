@@ -1,7 +1,7 @@
 from datetime import datetime
 from telebot import types
 import pickle
-import keyboard, class_user
+# import keyboard, class_user
 # requirements.txtrequirements.txtfrom .class_user import Employee
 
 def format_time(timestamp) -> str:

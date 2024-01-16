@@ -9,15 +9,14 @@ continue - продолжение работы с ботом
 help - информация о нахождении курсов
 
 """
+import logging
 
 from setings_HR_new import HR_BOT_TOKEN as TOKEN, \
     BOT_MESSAGE as mess, \
     HELP_MESSAGE, QUEST_FIRST_LIST, QUEST_SECOND_LIST, ADM_MESS, TEXT_QUESTIONNAIRES
-from HR_Lib.class_user import Employee
+# from HR_Lib.class_user import Employee
 import HR_Lib as lib
-# import HR_Lib.keyboard
-# import HR_Lib
-
+import HR_Lib.keyboard as kb  # вызов модуля организации меню
 
 import telebot
 from telebot import types
@@ -32,6 +31,7 @@ from time import time, sleep
 bot = telebot.TeleBot(TOKEN['token'])  # привязка бота к коду
 
 global employee
+
 
 class Employee:
     """Класс, представляющий параметры и функции сотрудника"""
@@ -57,6 +57,7 @@ class Employee:
         self.survey_days = [3, 4, 5, 30, 60, 90]  # Список дней в которые проводятся текстовые опросы
         self.survey_next = [9, 10, 11]  # Список курсов перед которыми проводятся текстовые опросы
         self.quest_rez = {}
+
     def survey_first_day(self, id_mess, type_quest=1):
         """
         Функция опросника в первый рабочий день. Данные заносятся в self.score_dey
@@ -68,7 +69,7 @@ class Employee:
                 bot.edit_message_text(self.name_questionnaire[self.index_question],
                                       self.id_user,
                                       id_mess,
-                                      reply_markup=lib.keyboard.simple_menu('Yes_Q', 'No_Q'))
+                                      reply_markup=kb.simple_menu('Yes_Q', 'No_Q'))
             else:
                 answer = bot.send_message(self.id_user, self.name_questionnaire[self.index_question])
                 bot.register_next_step_handler(answer, self.saving_results)
@@ -90,7 +91,7 @@ class Employee:
                 self.second_quest = True
             lib.dump_employees(employees)  # сериализация изменений объекта пользователя в файл
             self.index_question = 0
-            self.adaptation_dey += 1 # 3 день
+            self.adaptation_dey += 1  # 3 день
             # передаем управление ботом модулю schedule
             # schedule.every().day.until('09:00').do(notification_9_00, employees, message.chat.id)
             #
@@ -163,7 +164,7 @@ def notification_9_00(employees_dict, chat_id):
     :param chat_id:
     :return:
     """
-    #employee = employees_dict[chat_id]
+    # employee = employees_dict[chat_id]
 
     bot.send_message(chat_id, '====09:00====')
     # ====================================
@@ -187,13 +188,13 @@ def notification_9_00(employees_dict, chat_id):
 
         bot.send_message(chat_id,
                          f'{employee.name}, {mess[1][4]}',
-                         reply_markup=lib.keyboard.simple_menu('Yes_HR', 'No_HR'),
+                         reply_markup=kb.simple_menu('Yes_HR', 'No_HR'),
                          disable_notification=True)
     elif employee.adaptation_dey == 2:
         bot.send_message(chat_id,
                          mess[99][2],
                          disable_notification=True,
-                         reply_markup=lib.keyboard.simple_menu())
+                         reply_markup=kb.simple_menu())
     # elif employee.adaptation_dey == 3:
     #     bot.send_message(chat_id,
     #                      mess[99][4],
@@ -204,7 +205,8 @@ def notification_9_00(employees_dict, chat_id):
         bot.send_message(chat_id,
                          mess[99][4],
                          disable_notification=True,
-                         reply_markup=lib.keyboard.simple_menu())
+                         reply_markup=kb.simple_menu())
+
 
 def stiker_hi(chat_id):
     """Функция выводит стикер приветствия"""
@@ -215,13 +217,14 @@ def stiker_hi(chat_id):
     except KeyError:
         return id_mess.id
 
+
 def send_next_question():
     """
     Функция направляет очередной вопрос из списка по ключу равному номеру дня адаптации
     """
     if employee.index_question < len(employee.name_questionnaire[employee.adaptation_dey]):
         query = bot.send_message(employee.id_user, f'Вопрос {employee.index_question + 1}\n'
-                                    f'{employee.name_questionnaire[employee.adaptation_dey][employee.index_question]}')
+                                                   f'{employee.name_questionnaire[employee.adaptation_dey][employee.index_question]}')
         bot.register_next_step_handler(query, save_query)
     else:
         bot.send_message(employee.id_user, 'Спасибо за пройденный опрос')
@@ -241,6 +244,7 @@ def send_next_question():
         # else:
         #     bot.send_message(employee.id_user, f'quest_rez={employee.quest_rez}')
         #     bot.send_message(employee.id_user, 'Тестирование закончено')
+
 
 def save_query(message):
     """
@@ -286,7 +290,7 @@ def handle_start(message):
             else:
                 bot.send_message(message.chat.id,
                                  mess[99][4],
-                                 reply_markup=lib.keyboard.simple_menu())
+                                 reply_markup=kb.simple_menu())
 
     elif message.text == '/help':
         help_m = bot.send_message(message.chat.id, HELP_MESSAGE)
@@ -354,12 +358,12 @@ def message_cours(chat_id):
         employees[chat_id].name_questionnaire = QUEST_SECOND_LIST
         bot.send_message(chat_id,
                          f'<b>{employees[chat_id].name}</b> {mess[99][11]}',
-                         reply_markup=lib.keyboard.simple_menu(call_yes='yes_answer', call_no='no_answer'),
+                         reply_markup=kb.simple_menu(call_yes='yes_answer', call_no='no_answer'),
                          parse_mode='html'
                          )
     elif employees[chat_id].adaptation_dey in employees[chat_id].survey_days \
             and employees[chat_id].current_course in employees[chat_id].survey_next:
-#        if employees[chat_id].current_course == employees[chat_id].survey_next.pop(0):
+        #        if employees[chat_id].current_course == employees[chat_id].survey_next.pop(0):
         employees[chat_id].name_questionnaire = TEXT_QUESTIONNAIRES
         employees[chat_id].survey_next.pop(0)
         if employees[chat_id].adaptation_dey == 5:
@@ -368,7 +372,7 @@ def message_cours(chat_id):
             mess_survey = f'<b>{employees[chat_id].name}</b> {mess[99][14]}'
         bot.send_message(chat_id,
                          mess_survey,
-                         reply_markup=lib.keyboard.simple_menu(call_yes='yes_answer', call_no='no_answer'),
+                         reply_markup=kb.simple_menu(call_yes='yes_answer', call_no='no_answer'),
                          parse_mode='html'
                          )
         pass
@@ -384,7 +388,7 @@ def message_cours(chat_id):
                          parse_mode='html'
                          )
         push_offer = bot.send_message(chat_id, mess[99][3],
-                                      reply_markup=lib.menu_ready(),
+                                      reply_markup=kb.menu_ready(),
                                       parse_mode='html')
 
         global id_message
@@ -431,7 +435,7 @@ def pressing_reaction(call):
         # bot.delete_message(call.message.chat.id, time_out.id)
         bot.send_message(call.message.chat.id,
                          mess[0][4],
-                         reply_markup=lib.keyboard.simple_menu())
+                         reply_markup=kb.simple_menu())
     # 'Yes_HR','No_HR' реакция о вопросе про документы
     elif call.data == 'Yes_HR':
         chif = bot.edit_message_text(mess[1][5], call.message.chat.id, call.message.id)
@@ -443,7 +447,7 @@ def pressing_reaction(call):
 
         bot.send_message(call.message.chat.id,
                          mess[1][6],
-                         reply_markup=lib.keyboard.simple_menu(call_yes='yes_answer', call_no='no_answer'),
+                         reply_markup=kb.simple_menu(call_yes='yes_answer', call_no='no_answer'),
                          disable_notification=True)
     elif call.data == 'No_HR':
         time_out = bot.send_message(call.message.chat.id, mess[99][6])
@@ -453,7 +457,7 @@ def pressing_reaction(call):
         sleep(5)
         bot.send_message(call.message.chat.id,
                          f'{employee.name}, {mess[1][4]}',
-                         reply_markup=lib.keyboard.simple_menu('Yes_HR', 'No_HR'))
+                         reply_markup=kb.simple_menu('Yes_HR', 'No_HR'))
     # 'yes_answer', 'no_answer' реакция на приглашение к опросу
     elif call.data == 'yes_answer':
         if employee.name_questionnaire == QUEST_FIRST_LIST:
@@ -463,7 +467,7 @@ def pressing_reaction(call):
             id_mess = bot.edit_message_text(mess[99][12], call.message.chat.id, call.message.id)
             employee.survey_first_day(id_mess.id, type_quest=2)
         elif employee.name_questionnaire == TEXT_QUESTIONNAIRES:
-            #id_mess = bot.edit_message_text(mess[99][13], call.message.chat.id, call.message.id)
+            # id_mess = bot.edit_message_text(mess[99][13], call.message.chat.id, call.message.id)
             bot.edit_message_text(mess[99][13], call.message.chat.id, call.message.id)
 
             employee.quest_rez[employee.adaptation_dey] = []
@@ -497,7 +501,7 @@ def text_reaction(message):
 
     # ========== Переделать с учетом изменения в словаре сообщений
     elif message.text[:6] == 'Прошел':  # Реакция на нажатие кнопки "Прошел"
-#    elif message.text == 'Прошел✔️':  # Реакция на нажатие кнопки "Прошел"
+        #    elif message.text == 'Прошел✔️':  # Реакция на нажатие кнопки "Прошел"
 
         employees[message.chat.id].courses[employees[message.chat.id].current_course - 1] = 1
         employees[message.chat.id].current_course += 1
@@ -540,7 +544,7 @@ def text_reaction(message):
 
 
 if __name__ == '__main__':
-    while True: # Цикл для постоянного перезапуска бота
+    while True:  # Цикл для постоянного перезапуска бота
         try:
             print('Мой HR-бот')
             print(lib.format_time(time()))
@@ -548,5 +552,6 @@ if __name__ == '__main__':
             print('Started')
             bot.polling(none_stop=True, interval=0, skip_pending=True)
         except:
+            logging.exception()
             continue
     print('Stoped')
