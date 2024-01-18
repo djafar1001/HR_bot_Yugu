@@ -9,7 +9,6 @@ continue - продолжение работы с ботом
 help - информация о нахождении курсов
 
 """
-import logging
 
 from setings_HR_new import HR_BOT_TOKEN as TOKEN, \
     BOT_MESSAGE as mess, \
@@ -27,11 +26,13 @@ import pickle
 # import datetime
 from time import time, sleep
 
+from loguru import logger
+
 # Создание экземпляра бота с использованием токена
 bot = telebot.TeleBot(TOKEN['token'])  # привязка бота к коду
 
 global employee
-
+logger.add()
 
 class Employee:
     """Класс, представляющий параметры и функции сотрудника"""
@@ -128,8 +129,8 @@ class Employee:
 
 
 # Открываем или создаем словарь для хранения данных о сотрудниках
-if path.exists('Employee/employees.db'):
-    with open('Employee/employees.db', 'rb') as file:
+if path.exists('Employee/employees.pkl'):
+    with open('Employee/employees.pkl', 'rb') as file:
         employees = pickle.load(file)
 else:
     employees = {}
@@ -258,7 +259,7 @@ def save_query(message):
 
 
 @bot.message_handler(commands=['start', 'help', 'continue', 'edit', 'adm'])
-def handle_start(message):
+def handle_start(message: types.Message):
     """
     После ввода команды /start Проверяем наличие пользователя в словаре сотрудников
     и в случае отсутствия запрашиваем его имя. Полученный результат передаем
@@ -311,7 +312,7 @@ def handle_start(message):
         pass
 
 
-def start_dialog(message):
+def start_dialog(message: types.Message):
     """
     Создание объекта сотрудника и сохранение его в словаре по
     идентификатору чата с последующей сериализацией в битовый файл.
@@ -354,6 +355,8 @@ def start_dialog(message):
 
 
 def message_cours(chat_id):
+    """"
+    """
     if employees[chat_id].current_course == 7 and not employees[chat_id].second_quest:
         employees[chat_id].name_questionnaire = QUEST_SECOND_LIST
         bot.send_message(chat_id,
@@ -396,7 +399,7 @@ def message_cours(chat_id):
 
 
 @bot.callback_query_handler(func=lambda call: True)
-def pressing_reaction(call):
+def pressing_reaction(call: types.CallbackQuery):
     employee = employees[call.message.chat.id]  # Идентификация пользователя
 
     if call.data == 'yes':
@@ -490,6 +493,8 @@ def pressing_reaction(call):
         employee.score_dey[employee.index_question] = 0
         employee.index_question += 1
         employee.survey_first_day(call.message.id)
+    elif call.data.isdigit() and (0 < int(call.data) < 11):  # Проверка callback если нажата числовая кнопка
+        pass
 
 
 @bot.message_handler(content_types=['text'])
@@ -552,6 +557,6 @@ if __name__ == '__main__':
             print('Started')
             bot.polling(none_stop=True, interval=0, skip_pending=True)
         except:
-            logging.exception()
+            logger.exception()
             continue
     print('Stoped')

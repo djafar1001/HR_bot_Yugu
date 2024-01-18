@@ -24,3 +24,19 @@ def menu_ready():
     kb.add(btn_1)
 
     return kb
+
+
+def create_inline_keyboard_2x5():
+    """
+    Функция создает inline-меню из 10 кнопок в 2 ряда по 5 в каждом
+    с соответствущим числом и callbeck = этому числу в str
+    """
+    markup = types.InlineKeyboardMarkup()
+
+    row1 = [types.InlineKeyboardButton(str(i), callback_data=str(i)) for i in range(1, 6)]
+    row2 = [types.InlineKeyboardButton(str(i), callback_data=str(i)) for i in range(6, 11)]
+
+    markup.row(*row1)  # Первый ряд
+    markup.row(*row2)  # Второй ряд
+
+    return markup

@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d45757aa-8889-4849-89a4-087695c0dd9b" name="Changes" comment="Структуризация функций создания клавиатуры">
+    <list default="true" id="d45757aa-8889-4849-89a4-087695c0dd9b" name="Changes" comment="Исправление ошибок вызова функций формирования меню кнопок">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Employee/employees.db" beforeDir="false" afterPath="$PROJECT_DIR$/Employee/employees.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HR_Lib/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/HR_Lib/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HR_Lib/keyboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/HR_Lib/keyboard.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_new.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_new.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -393,7 +393,14 @@
       <option name="project" value="LOCAL" />
       <updated>1705331440454</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="Исправление ошибок вызова функций формирования меню кнопок">
+      <created>1705407793297</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1705407793297</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -431,7 +438,8 @@
     <MESSAGE value="Проба настройки логирования" />
     <MESSAGE value="Проба настройки логирования loguru" />
     <MESSAGE value="Структуризация функций создания клавиатуры" />
-    <option name="LAST_COMMIT_MESSAGE" value="Структуризация функций создания клавиатуры" />
+    <MESSAGE value="Исправление ошибок вызова функций формирования меню кнопок" />
+    <option name="LAST_COMMIT_MESSAGE" value="Исправление ошибок вызова функций формирования меню кнопок" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

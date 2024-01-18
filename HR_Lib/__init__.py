@@ -59,23 +59,23 @@ def time_begin():
 
 def dump_employees(employees):
     """Функция сохранения словаря пользователей в битный файл"""
-    with open('./Employee/employees.db', 'wb') as file:  # !!!нужно создать функцию
+    with open('./Employee/employees.pkl', 'wb') as file:  # !!!нужно создать функцию
         pickle.dump(employees, file)
 
-def create_inline_keyboard_2x5():
-    """
-    Функция создает inline-меню из 10 кнопок в 2 ряда по 5 в каждом
-    с соответствущим числом и callbeck = этому числу в str
-    """
-    markup = types.InlineKeyboardMarkup()
-
-    row1 = [types.InlineKeyboardButton(str(i), callback_data=str(i)) for i in range(1, 6)]
-    row2 = [types.InlineKeyboardButton(str(i), callback_data=str(i)) for i in range(6, 11)]
-
-    markup.row(*row1)  # Первый ряд
-    markup.row(*row2)  # Второй ряд
-
-    return markup
+# def create_inline_keyboard_2x5():
+#     """
+#     Функция создает inline-меню из 10 кнопок в 2 ряда по 5 в каждом
+#     с соответствущим числом и callbeck = этому числу в str
+#     """
+#     markup = types.InlineKeyboardMarkup()
+#
+#     row1 = [types.InlineKeyboardButton(str(i), callback_data=str(i)) for i in range(1, 6)]
+#     row2 = [types.InlineKeyboardButton(str(i), callback_data=str(i)) for i in range(6, 11)]
+#
+#     markup.row(*row1)  # Первый ряд
+#     markup.row(*row2)  # Второй ряд
+#
+#     return markup
 
 
 # def user_verification(id_user, employees):
