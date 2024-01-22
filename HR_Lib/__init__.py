@@ -13,7 +13,7 @@ def format_time(timestamp) -> str:
     dt_object = datetime.fromtimestamp(timestamp)
     df_time = f'{dt_object:%d-%m-%Y %H:%M:%S}'
 
-    return df_time
+    return df_time.replace(' ', '_')
 
 #  ============= Перенесено в keyboard.py =======================
 # def simple_menu(call_yes='yes', call_no='no'):

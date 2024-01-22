@@ -40,3 +40,21 @@ def create_inline_keyboard_2x5():
     markup.row(*row2)  # Второй ряд
 
     return markup
+
+
+def create_reply_keyboard_2x5(item_list: list, amount_rows=1, buttons_amount=3) -> types.ReplyKeyboardMarkup:
+    """
+    Функция создает reply-меню из buttons_amount кнопок в amount_rows ряд
+    с соответствущим числом
+    :param item_list: список названий кнопок reply-меню
+    :param amount_rows: количество рядов кнопок в reply-меню
+    :param buttons_amount: количество кнопок в ряду
+    :return: markup
+    """
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True, row_width=buttons_amount)
+
+    for i_row in range(amount_rows):
+        markup.row()
+
+    markup.add(*item_list)
+    return markup

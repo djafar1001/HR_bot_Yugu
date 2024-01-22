@@ -42,7 +42,7 @@ class Employee:
 quest_rez = {}  # Словарь ответов на вопросы в соответствии с номером дня
 
 #logger = logging.getLogger(__name__)
-logger.add('./log/test_log.log',
+logger.add('log/test_log.log',
            level='DEBUG',
            rotation='100 kb')
 #logger.add('./log/test_log.log', level='DEBUG')

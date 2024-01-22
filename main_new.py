@@ -32,7 +32,8 @@ from loguru import logger
 bot = telebot.TeleBot(TOKEN['token'])  # привязка бота к коду
 
 global employee
-logger.add()
+# log_file = f'log/bot_{lib.format_time(time())}.log'
+# logger.add(log_file)
 
 class Employee:
     """Класс, представляющий параметры и функции сотрудника"""
