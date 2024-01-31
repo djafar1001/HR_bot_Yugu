@@ -42,6 +42,22 @@ def create_inline_keyboard_2x5():
     return markup
 
 
+def create_inline_keyboard_2x5():
+    """
+    Функция создает inline-меню из 10 кнопок в 2 ряда по 5 в каждом
+    с соответствущим числом и callbeck = этому числу в str
+    """
+    markup = types.InlineKeyboardMarkup()
+
+    row1 = [types.InlineKeyboardButton(str(i), callback_data=str(i)) for i in range(1, 6)]
+    row2 = [types.InlineKeyboardButton(str(i), callback_data=str(i)) for i in range(6, 11)]
+
+    markup.row(*row1)  # Первый ряд
+    markup.row(*row2)  # Второй ряд
+
+    return markup
+
+
 def create_reply_keyboard_2x5(item_list: list, amount_rows=1, buttons_amount=3) -> types.ReplyKeyboardMarkup:
     """
     Функция создает reply-меню из buttons_amount кнопок в amount_rows ряд

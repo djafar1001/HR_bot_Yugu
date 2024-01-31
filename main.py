@@ -10,7 +10,7 @@ help - информация о нахождении курсов
 
 """
 from setings_HR import HR_BOT_TOKEN as TOKEN, BOT_MESSAGE as mess, HELP_MESS
-import HR_Lib as lib
+import Lib as lib
 
 import telebot
 from telebot import types

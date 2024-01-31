@@ -1,5 +1,5 @@
 from setings_test import TOKEN_T_BOT as TOKEN
-import HR_Lib as lib
+import Lib as lib
 import telebot
 import datetime
 import pickle

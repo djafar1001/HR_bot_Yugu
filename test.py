@@ -1,5 +1,5 @@
 from setings_HR import HR_BOT_TOKEN as TOKEN, BOT_MESSAGE as mess, HELP_MESS
-#import HR_Lib as lib
+import Lib as lib
 
 import telebot
 #from telebot import types
@@ -10,7 +10,7 @@ bot = telebot.TeleBot(TOKEN['token'])  # привязка бота к коду
 def send_notification(chat_id, message):
     # Используйте метод sendMessage с параметром disable_notification=True
     sleep(10)
-    bot.send_message(chat_id, message, disable_notification=True)
+    bot.send_message(chat_id, message, disable_notification=True, reply_markup=lib.keyboard.create_inline_keyboard_2x5())
 
 # Команда для отправки уведомления
 @bot.message_handler(commands=['send_notification'])

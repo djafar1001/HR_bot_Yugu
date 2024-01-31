@@ -1,5 +1,5 @@
 from setings_test import TOKEN_T_BOT as TOKEN
-import HR_Lib
+import Lib
 
 import telebot
 from telebot import types
@@ -94,7 +94,7 @@ def calculate_and_send_average_rating(user_id):
 # Запуск бота
 if __name__ == '__main__':
     print('Мой HR-бот')
-    print(HR_Lib.format_time(4567824))
+    print(Lib.format_time(4567824))
     # Запуск бота в работу на ожидание сообщений в бесконечном режиме без интервалов
     print('Started')
     bot.polling(none_stop=True, interval=0)

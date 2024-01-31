@@ -2,7 +2,7 @@ from setings_HR_new import HR_BOT_TOKEN as TOKEN, \
     BOT_MESSAGE as mess, \
     HELP_MESSAGE, QUEST_FIRST_LIST, QUEST_SECOND_LIST, ADM_MESS
 from setings_test import TOKEN_T_BOT as TOKEN
-import HR_Lib as lib
+import Lib as lib
 import telebot
 import datetime
 import pickle

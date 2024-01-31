@@ -1,6 +1,6 @@
 from setings_test import TOKEN_T_BOT as TOKEN
 import telebot
-import HR_Lib
+import Lib
 #from telebot import types
 #from os import path
 #import json
@@ -28,7 +28,7 @@ user_ratings = {}
 # Запуск бота
 if __name__ == '__main__':
     print('Мой HR-бот')
-    print(HR_Lib.format_time(4567824))
+    print(Lib.format_time(4567824))
     # Запуск бота в работу на ожидание сообщений в бесконечном режиме без интервалов
     print('Started')
     bot.polling(none_stop=True, interval=0)

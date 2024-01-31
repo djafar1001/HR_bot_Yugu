@@ -14,9 +14,9 @@ from setings_HR_new import HR_BOT_TOKEN as TOKEN, \
     BOT_MESSAGE as mess, \
     HELP_MESSAGE, QUEST_FIRST_LIST, QUEST_SECOND_LIST, ADM_MESS, TEXT_QUESTIONNAIRES
 
-import HR_Lib as lib
-import HR_Lib.keyboard as kb  # вызов модуля организации меню
-from HR_Lib import utils
+import Lib as lib
+import Lib.keyboard as kb  # вызов модуля организации меню
+from Lib import utils
 
 import telebot
 from telebot import types
@@ -278,7 +278,7 @@ def handle_start(message: types.Message):
     :param message:
     :return:
     """
-    if message.text == '/start':
+    if message.text.lstrip('/') == 'start':
         if message.chat.id not in employees.keys():
             bot.send_message(message.chat.id, mess[0][2])  # Приветствие
             global mess_hi
@@ -303,11 +303,19 @@ def handle_start(message: types.Message):
                                  mess[99][4],
                                  reply_markup=kb.simple_menu())
 
-    elif message.text == '/help':
+    elif message.text.lstrip('/') == 'help':
         help_m = bot.send_message(message.chat.id, HELP_MESSAGE)
         sleep(5)
         bot.delete_message(message.chat.id, help_m.id)
-    elif message.text in ['/continue', '/edit']:
+    elif message.text.lstrip('/') == 'continue':
+
+        if message.chat.id in employees.keys():
+            employee = employees[message.chat.id]
+            utils.check_work(employee, bot)
+        else:
+            bot.send_message(message.chat.id, mess[99][16])
+
+    elif message.text.lstrip('/') == 'edit':
         element_develop(message.chat.id)
         # with open('./pic/Hand_work.tgs', 'rb') as file:
         #     ms_1 = bot.send_sticker(message.chat.id, file)
