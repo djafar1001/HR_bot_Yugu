@@ -13,27 +13,41 @@ help - информация о нахождении курсов
 from setings_HR_new import HR_BOT_TOKEN as TOKEN, \
     BOT_MESSAGE as mess, \
     HELP_MESSAGE, QUEST_FIRST_LIST, QUEST_SECOND_LIST, ADM_MESS, TEXT_QUESTIONNAIRES
-# from HR_Lib.class_user import Employee
+
 import HR_Lib as lib
 import HR_Lib.keyboard as kb  # вызов модуля организации меню
+from HR_Lib import utils
 
 import telebot
 from telebot import types
 from os import path, remove
 
-# import schedule
+import schedule
 import pickle
 # import datetime
 from time import time, sleep
 
 from loguru import logger
 
+# ============================= Глобальные переменные ==============================
 # Создание экземпляра бота с использованием токена
-bot = telebot.TeleBot(TOKEN['token'])  # привязка бота к коду
+bot = telebot.TeleBot(TOKEN['token'], parse_mode='HTML')  # привязка бота к коду
 
-global employee
+# Открываем или создаем словарь для хранения данных о сотрудниках
+if path.exists('Employee/employees.pkl'):
+    with open('Employee/employees.pkl', 'rb') as file:
+        employees = pickle.load(file)
+else:
+    employees = {}
+
+# Создание списка Reply-кнопок от 10 до 0
+item_list = [types.KeyboardButton(str(i))
+             for i in range(10, -1, -1)
+             ]
+
 # log_file = f'log/bot_{lib.format_time(time())}.log'
 # logger.add(log_file)
+# ===================================================================================
 
 class Employee:
     """Класс, представляющий параметры и функции сотрудника"""
@@ -129,12 +143,7 @@ class Employee:
                          )
 
 
-# Открываем или создаем словарь для хранения данных о сотрудниках
-if path.exists('Employee/employees.pkl'):
-    with open('Employee/employees.pkl', 'rb') as file:
-        employees = pickle.load(file)
-else:
-    employees = {}
+
 
 
 # Требуется создания функции проверки состояния процесса адаптации для всех пользователей
